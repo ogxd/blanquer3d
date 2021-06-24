@@ -1,82 +1,83 @@
 import React, { Component } from "react";
-import {
-  makeStyles,
-  createStyles,
-  Theme,
-  withStyles,
-} from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Backdrop from "@material-ui/core/Backdrop";
-import SpeedDial from "@material-ui/lab/SpeedDial";
-import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
-import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
-import Clear from "@material-ui/icons/Clear";
-import Remove from "@material-ui/icons/Remove";
-import CropFree from "@material-ui/icons/CropFree";
-import RadioButtonUnchecked from "@material-ui/icons/RadioButtonUnchecked";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Collapse from "@material-ui/core/Collapse";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
+import DraftsIcon from "@material-ui/icons/Drafts";
+import SendIcon from "@material-ui/icons/Send";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import StarBorder from "@material-ui/icons/StarBorder";
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      height: 380,
-      transform: "translateZ(0px)",
-      flexGrow: 1,
+      width: "100%",
+      maxWidth: 360,
+      backgroundColor: theme.palette.background.paper,
     },
-    speedDial: {
-      position: "absolute",
-      bottom: theme.spacing(2),
-      right: theme.spacing(2),
+    nested: {
+      paddingLeft: theme.spacing(4),
     },
   });
 
-const actions = [
-  { icon: <Clear />, name: "Point" },
-  { icon: <Remove />, name: "Segment" },
-  { icon: <Remove />, name: "Droite" },
-  { icon: <CropFree />, name: "Plan" },
-  { icon: <RadioButtonUnchecked />, name: "Cercle" },
-];
-
 class Hierarchy extends Component {
-  state = {
-    open: true,
-    hidden: false,
-  };
+  // state = {
+  //   open: false,
+  // };
 
-  render() {
+  render(): JSX.Element {
     //const { classes } = this.props;
 
-    const handleOpen = () => {
-      this.setState({ open: true });
-    };
-
-    const handleClose = () => {
-      this.setState({ open: false });
+    const handleClick = () => {
+      //this.setOpen(!this.open);
     };
 
     return (
-      <div>
-        <Backdrop open={this.state.open} />
-        <SpeedDial
-          ariaLabel="SpeedDial tooltip example"
-          // className={classes.speedDial}
-          hidden={this.state.hidden}
-          icon={<SpeedDialIcon />}
-          onClose={handleClose}
-          onOpen={handleOpen}
-          open={this.state.open}
-        >
-          {actions.map((action) => (
-            <SpeedDialAction
-              key={action.name}
-              icon={action.icon}
-              tooltipTitle={action.name}
-              tooltipOpen
-              onClick={handleClose}
-            />
-          ))}
-        </SpeedDial>
-      </div>
+      <List
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+        subheader={
+          <ListSubheader component="div" id="nested-list-subheader">
+            Nested List Items
+          </ListSubheader>
+        }
+        className={classes.root}
+      >
+        <ListItem button>
+          <ListItemIcon>
+            <SendIcon />
+          </ListItemIcon>
+          <ListItemText primary="Sent mail" />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <DraftsIcon />
+          </ListItemIcon>
+          <ListItemText primary="Drafts" />
+        </ListItem>
+        <ListItem button onClick={handleClick}>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary="Inbox" />
+          {open ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={this.open} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItem button className={classes.nested}>
+              <ListItemIcon>
+                <StarBorder />
+              </ListItemIcon>
+              <ListItemText primary="Starred" />
+            </ListItem>
+          </List>
+        </Collapse>
+      </List>
     );
   }
 }
