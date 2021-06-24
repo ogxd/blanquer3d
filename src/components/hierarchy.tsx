@@ -1,17 +1,16 @@
 import React, { Component } from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import DraftsIcon from "@material-ui/icons/Drafts";
-import SendIcon from "@material-ui/icons/Send";
+import CropDin from "@material-ui/icons/CropDin";
+import FolderOpen from "@material-ui/icons/FolderOpen";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
-import StarBorder from "@material-ui/icons/StarBorder";
+import Clear from "@material-ui/icons/Clear";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -26,54 +25,49 @@ const styles = (theme: Theme) =>
   });
 
 class Hierarchy extends Component {
-  // state = {
-  //   open: false,
-  // };
+  state = {
+    open: false,
+  };
 
   render(): JSX.Element {
     //const { classes } = this.props;
 
     const handleClick = () => {
-      //this.setOpen(!this.open);
+      this.setState({ open: !this.state.open });
     };
 
     return (
       <List
         component="nav"
         aria-labelledby="nested-list-subheader"
-        subheader={
-          <ListSubheader component="div" id="nested-list-subheader">
-            Nested List Items
-          </ListSubheader>
-        }
-        className={classes.root}
+        // className={classes.root}
       >
         <ListItem button>
           <ListItemIcon>
-            <SendIcon />
+            <Clear />
           </ListItemIcon>
-          <ListItemText primary="Sent mail" />
+          <ListItemText primary="Point A" />
         </ListItem>
         <ListItem button>
           <ListItemIcon>
-            <DraftsIcon />
+            <Clear />
           </ListItemIcon>
-          <ListItemText primary="Drafts" />
+          <ListItemText primary="Point B" />
         </ListItem>
         <ListItem button onClick={handleClick}>
           <ListItemIcon>
-            <InboxIcon />
+            <FolderOpen />
           </ListItemIcon>
-          <ListItemText primary="Inbox" />
-          {open ? <ExpandLess /> : <ExpandMore />}
+          <ListItemText primary="Groupe 1" />
+          {this.state.open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <Collapse in={this.open} timeout="auto" unmountOnExit>
+        <Collapse in={this.state.open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItem button className={classes.nested}>
+            <ListItem button>
               <ListItemIcon>
-                <StarBorder />
+                <CropDin />
               </ListItemIcon>
-              <ListItemText primary="Starred" />
+              <ListItemText primary="Carré" />
             </ListItem>
           </List>
         </Collapse>
