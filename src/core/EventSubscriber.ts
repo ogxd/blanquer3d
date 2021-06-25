@@ -1,6 +1,6 @@
 import { arrayRemove } from "../core/Utils";
 
-type Predicate<T> = (item: T) => boolean;
+type Predicate<T> = (item: T) => void;
 
 class EventSubscriber<EventData> {
   private _listeners: Predicate<EventData>[] = [];
@@ -10,7 +10,7 @@ class EventSubscriber<EventData> {
   }
 
   unsubscribe(predicate: Predicate<EventData>) {
-    arrayRemove(this._listeners, predicate);
+    this._listeners = arrayRemove(this._listeners, predicate);
   }
 
   dispatch(eventData: EventData) {

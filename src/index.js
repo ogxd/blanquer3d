@@ -11,13 +11,3 @@ ReactDOM.render(
 );
 ReactDOM.render(<Hierarchy />, document.getElementById("hierarchy"));
 ReactDOM.render(<Viewport />, document.getElementById("viewport"));
-
-function print(msg) {
-  console.log(msg);
-}
-
-var scene = new Scene();
-scene.onObjectAdded.subscribe(print);
-scene.onObjectAdded.dispatch("coucou1");
-scene.onObjectAdded.unsubscribe(print);
-scene.onObjectAdded.dispatch("coucou2");
