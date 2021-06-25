@@ -1,11 +1,9 @@
-import { useIsFocusVisible } from "@material-ui/core";
-
-interface IScene {
+interface IPrimitive {
   isVisible(): boolean;
   doTest(): void;
 }
 
-class Scene implements IScene {
+class Primitive implements IPrimitive {
   isVisible(): boolean {
     throw new Error("Method not implemented.");
   }
@@ -14,4 +12,4 @@ class Scene implements IScene {
   }
 }
 
-export default Scene;
+export default Primitive;

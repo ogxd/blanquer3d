@@ -10,7 +10,6 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "bootstrap": "^4.1.1",
-    "mocha": "^9.0.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-scripts": "^4.0.3",
@@ -21,8 +20,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "mocha 'src/tests/**/*.js'",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'"
   },
   "eslintConfig": {
     "extends": [
@@ -43,6 +42,11 @@
     ]
   },
   "devDependencies": {
-    "@types/three": "^0.129.1"
+    "@types/chai": "^4.2.19",
+    "@types/mocha": "^8.2.2",
+    "@types/three": "^0.129.1",
+    "chai": "^4.3.4",
+    "mocha": "^9.0.1",
+    "ts-node": "^10.0.0"
   }
 }

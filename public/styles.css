@@ -10,9 +10,10 @@
   position: absolute;
   top: 0;
   left: 0;
-  opacity: 0.8; /* for demo purpose  */
+  opacity: 0.5;
+  background-color: brown;
 }
 .stack-top {
+  background-color: blue;
   z-index: 9;
-  margin: 20px; /* for demo purpose  */
 }
