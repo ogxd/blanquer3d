@@ -10,7 +10,7 @@ class EventSubscriber<EventData> {
   }
 
   unsubscribe(predicate: Predicate<EventData>) {
-    this._listeners = arrayRemove(this._listeners, predicate);
+    arrayRemove(this._listeners, predicate);
   }
 
   dispatch(eventData: EventData) {
