@@ -10,10 +10,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  opacity: 0.5;
-  background-color: brown;
+  opacity: 1;
 }
 .stack-top {
-  background-color: blue;
   z-index: 9;
 }
