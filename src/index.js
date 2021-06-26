@@ -16,9 +16,20 @@ ReactDOM.render(<Viewport />, document.getElementById("viewport"));
 var point = new Point();
 
 point.onPropertyChanged.subscribe((x) => {
-  console.log("property changed: " + x + "=" + point[x]);
+  console.log("point property changed: " + x + "=" + point[x]);
 });
 
 point.position = new Vector3(1, 2, 3);
 point.position = new Vector3(1, 2, 4);
 point.position = new Vector3(1, 2, 5);
+
+console.log((() => console.log("prout")) == (() => console.log("prout")));
+
+var segment = new Segment();
+
+segment.onPropertyChanged.subscribe((x) => {
+  console.log("segment property changed: " + x + "=" + segment[x]);
+});
+
+segment.point1 = new Point();
+segment.point1.position = new Vector3(2, 2, 2);

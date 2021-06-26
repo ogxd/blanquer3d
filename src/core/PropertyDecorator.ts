@@ -4,6 +4,8 @@ export function property(): any {
     // calling ourselves, and that results in an infinite loop.
     const key = Symbol();
 
+    let lambdas = new Map<any, any>();
+
     // We can return a property descriptor that is used to define
     // a property on the target given the `propertyKey`.
     return {
@@ -15,8 +17,12 @@ export function property(): any {
       set(newValue: any) {
         // Clamp the value and write it onto the target instance
         // using the unique symbol from above
+        this[key]?.onPropertyChanged?.unsubscribe(lambdas[this]);
         this[key] = newValue;
-        this.onPropertyChanged.dispatch(propertyKey);
+        this[key].onPropertyChanged?.subscribe(
+          (lambdas[this] = () => this.onPropertyChanged.dispatch(propertyKey))
+        );
+        this.onPropertyChanged?.dispatch(propertyKey);
       },
     };
   };
