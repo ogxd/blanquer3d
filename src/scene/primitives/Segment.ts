@@ -1,11 +1,13 @@
 import SceneObject from "../SceneObject";
 import Point from "./Point";
+import { property } from "../../core/PropertyDecorator";
 
 class Segment extends SceneObject {
-  constructor() {
-    super();
-    //this.initializeProperties({ A: (Point = null) });
-  }
+  @property()
+  point1: Point;
+
+  @property()
+  point2: Point;
 }
 
-export default Point;
+export default Segment;

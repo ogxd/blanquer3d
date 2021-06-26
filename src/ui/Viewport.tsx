@@ -56,7 +56,6 @@ class Viewport extends React.Component<ViewportProps, ViewportState> {
   }
 
   componentDidMount() {
-    console.log("mount");
     this.container?.appendChild(this.renderer.domElement);
     this.renderer.domElement.style.width = "inherit";
     this.renderer.domElement.style.height = "inherit";

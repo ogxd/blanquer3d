@@ -2,25 +2,11 @@ import EventSubscriber from "../core/EventSubscriber";
 
 interface ISceneObject {}
 
-class SceneObject implements ISceneObject {
+abstract class SceneObject implements ISceneObject {
   private _isVisible: boolean = true;
-  private _properties: any = {};
 
   readonly onVisibilityChanged = new EventSubscriber<boolean>();
-  readonly onPropertiesChanged = new EventSubscriber<any>();
-
-  protected initializeProperties(properties: any) {
-    this._properties = properties;
-  }
-
-  setProperties(properties: any) {
-    this._properties = properties;
-    this.onPropertiesChanged.dispatch(this._properties);
-  }
-
-  getProperties(): any {
-    return this._properties;
-  }
+  readonly onPropertyChanged = new EventSubscriber<string>();
 
   setVisibility(visibility: boolean) {
     var currentVisibility = this._isVisible;

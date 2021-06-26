@@ -12,6 +12,10 @@ class Vector3 {
   static Add(a: Vector3, b: Vector3) {
     return new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
   }
+
+  toString() {
+    return `<x:${this.x} y:${this.y} z:${this.z}>`;
+  }
 }
 
 export default Vector3;
