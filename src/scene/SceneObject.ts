@@ -11,7 +11,7 @@ abstract class SceneObject implements ISceneObject {
   setVisibility(visibility: boolean) {
     var currentVisibility = this._isVisible;
     this._isVisible = visibility;
-    if (currentVisibility != visibility) {
+    if (currentVisibility !== visibility) {
       this.onVisibilityChanged.dispatch(this._isVisible);
     }
   }
