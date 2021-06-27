@@ -15,6 +15,7 @@ class Scene implements IScene {
 
   removeObject(object: SceneObject) {
     arrayRemove(this._objects, object);
+    object.onDestroy.dispatch();
   }
 }
 

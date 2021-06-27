@@ -7,6 +7,7 @@ abstract class SceneObject implements ISceneObject {
 
   readonly onVisibilityChanged = new EventSubscriber<boolean>();
   readonly onPropertyChanged = new EventSubscriber<string>();
+  readonly onDestroy = new EventSubscriber<void>();
 
   setVisibility(visibility: boolean) {
     var currentVisibility = this._isVisible;

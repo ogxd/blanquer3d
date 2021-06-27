@@ -2,8 +2,8 @@ import { expect } from "chai";
 import EventSubscriber from "../src/core/EventSubscriber";
 import { property } from "../src/core/PropertyDecorator";
 
-describe("Core", () => {
-  it("EventSubscriber", () => {
+describe("core", () => {
+  it("EventSubscriber can subscribe, unsubscribe and dispatch events", () => {
     var eventSubscriber = new EventSubscriber<number>();
     var k = 0;
 
@@ -27,7 +27,7 @@ describe("Core", () => {
     expect(k).to.be.equal(4);
   });
 
-  it("PropertyDecorator", () => {
+  it("PropertyDecorator can handle property changes", () => {
     class MyObject {
       @property()
       myProperty: string;
@@ -48,7 +48,7 @@ describe("Core", () => {
     expect(result).to.be.equal("[myProperty=hello]");
   });
 
-  it("PropertyDecorator Nested", () => {
+  it("PropertyDecorator can handle nested property changes", () => {
     class MyNestedObject {
       @property()
       myNestedProperty: string;
@@ -77,5 +77,19 @@ describe("Core", () => {
     myObject.myProperty.myNestedProperty = "hello";
 
     expect(result).to.be.equal("[myProperty=nestedhello]");
+
+    // Now we test that changing the object corretly unsubcribes the old object property changed events
+    var newNestedObject = new MyNestedObject();
+    newNestedObject.myNestedProperty = "byebye";
+
+    var oldNestedObject = myObject.myProperty;
+    myObject.myProperty = newNestedObject;
+
+    // This should not trigger an event since the old object is not connected to myObject anymore
+    oldNestedObject.myNestedProperty = "azerty";
+
+    expect(result).to.be.equal(
+      "[myProperty=nestedhello][myProperty=nestedbyebye]"
+    );
   });
 });
