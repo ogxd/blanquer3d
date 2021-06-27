@@ -1,5 +1,6 @@
 import * as Three from "three";
 import * as React from "react";
+import Scene from "../scene/Scene";
 
 export interface ViewportProps {}
 
@@ -43,6 +44,8 @@ class Viewport extends React.Component<ViewportProps, ViewportState> {
 
     // Render Loop
     this.render3d();
+
+    Scene.getInstance().onObjectAdded.subscribe(() => {});
   }
 
   render3d() {
