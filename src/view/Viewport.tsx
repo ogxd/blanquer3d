@@ -31,9 +31,6 @@ class Viewport {
       10000
     );
     this._camera.up.set(0, 0, 1);
-    this._camera.position.y = -100;
-    this._camera.position.z = 100;
-    this._camera.lookAt(new Three.Vector3(0, 0, 0));
 
     // Create a renderer
     this._renderer = new Three.WebGLRenderer({ antialias: true });
@@ -65,7 +62,7 @@ class Viewport {
 
     this._resize();
 
-    var controls = new OrbitControls(this._camera, this._renderer.domElement);
+    this._controls = new OrbitControls(this._camera, this._renderer.domElement);
 
     // Light
     var ambientLight = new Three.AmbientLight(0xffffff);
@@ -83,7 +80,7 @@ class Viewport {
     material.side = Three.DoubleSide;
     material.transparent = true;
     this._billboard = new Three.Mesh(geometry, material);
-    this._scene.add(this._billboard);
+    //this._scene.add(this._billboard);
 
     // Text test
     // var text = new MeshText2D("RIGHT", {
@@ -92,12 +89,21 @@ class Viewport {
     //   fillStyle: "#000000",
     //   antialias: true,
     // });
-    this._text = new SpriteText("       A", 10, "#000000");
+    this._text = new SpriteText("A", 10, "#000000");
+    this._text.center = new Three.Vector2(-0.3, -0.3);
     this._scene.add(this._text);
+
+    this._text2 = new SpriteText("+", 10, "#000000");
+    //this._text2.center = new Three.Vector2(0, 0);
+    this._scene.add(this._text2);
+
+    this.setViewMode(false);
   }
 
   private _billboard: Three.Mesh;
   private _text: SpriteText;
+  private _text2: SpriteText;
+  private _controls: OrbitControls;
 
   unmount() {
     window.removeEventListener("resize", this._resize);
@@ -117,8 +123,7 @@ class Viewport {
 
       distance *= 35;
       this._text.textHeight = distance;
-
-      //this._text.scale.set(distance, distance, distance);
+      this._text2.textHeight = distance;
 
       // Projection 2D if required for DOM overlay approach
       var vector = this._billboard.position.clone();
@@ -139,11 +144,13 @@ class Viewport {
       this._camera.position.y = -100;
       this._camera.position.z = 100;
       this._camera.lookAt(new Three.Vector3(0, 0, 0));
+      this._controls.enableRotate = true;
     } else {
       this._camera.position.x = 0;
       this._camera.position.y = 0;
       this._camera.position.z = 100;
       this._camera.lookAt(new Three.Vector3(0, 0, 0));
+      this._controls.enableRotate = false;
     }
   }
 
