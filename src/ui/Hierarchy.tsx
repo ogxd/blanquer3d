@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
+import Grid from "@material-ui/core/Grid";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -10,6 +11,9 @@ import FolderOpen from "@material-ui/icons/FolderOpen";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import Clear from "@material-ui/icons/Clear";
+import Button from "@material-ui/core/Button";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -26,51 +30,62 @@ const styles = (theme: Theme) =>
 class Hierarchy extends Component {
   state = {
     open: false,
+    anchorEl: null,
   };
 
   render(): JSX.Element {
     //const { classes } = this.props;
 
-    const handleClick = () => {
-      this.setState({ open: !this.state.open });
+    //const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+    const setAnchorEl = (anchor: any) => {
+      this.setState({ anchorEl: anchor });
+    };
+
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+
+    const handleClick = (event: any) => {
+      setAnchorEl(event.currentTarget);
     };
 
     return (
-      <List
-        component="nav"
-        aria-labelledby="nested-list-subheader"
-        // className={classes.root}
-      >
-        <ListItem button>
-          <ListItemIcon>
-            <Clear />
-          </ListItemIcon>
-          <ListItemText primary="Point A" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <Clear />
-          </ListItemIcon>
-          <ListItemText primary="Point B" />
-        </ListItem>
-        <ListItem button onClick={handleClick}>
-          <ListItemIcon>
-            <FolderOpen />
-          </ListItemIcon>
-          <ListItemText primary="Groupe 1" />
-          {this.state.open ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-        <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem button>
-              <ListItemIcon>
-                <CropDin />
-              </ListItemIcon>
-              <ListItemText primary="Carré" />
-            </ListItem>
-          </List>
-        </Collapse>
-      </List>
+      <React.Fragment>
+        <List
+          component="nav"
+          aria-labelledby="nested-list-subheader"
+          // className={classes.root}
+        >
+          <ListItem button>
+            <ListItemText primary="Point A" />
+          </ListItem>
+          <ListItem button>
+            <ListItemText primary="Point B" />
+          </ListItem>
+        </List>
+        <Grid container justify="center">
+          <Button
+            color="primary"
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={handleClick}
+          >
+            Add
+          </Button>
+          <Menu
+            id="simple-menu"
+            anchorEl={this.state.anchorEl}
+            keepMounted
+            open={Boolean(this.state.anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleClose}>Point</MenuItem>
+            <MenuItem onClick={handleClose}>Segment</MenuItem>
+            <MenuItem onClick={handleClose}>Circle</MenuItem>
+          </Menu>
+        </Grid>
+      </React.Fragment>
     );
   }
 }

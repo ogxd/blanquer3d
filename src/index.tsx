@@ -1,11 +1,9 @@
 import ReactDOM from "react-dom";
-import HierarchyAddButton from "./ui/HierarchyAddButton";
 import Hierarchy from "./ui/Hierarchy";
-import Viewport from "./ui/Viewport";
+import Viewport from "./view/Viewport";
+import MainMenu from "./ui/MainMenu";
 
-ReactDOM.render(
-  <HierarchyAddButton />,
-  document.getElementById("hierarchy-add-button")
-);
 ReactDOM.render(<Hierarchy />, document.getElementById("hierarchy"));
-ReactDOM.render(<Viewport />, document.getElementById("viewport"));
+ReactDOM.render(<MainMenu />, document.getElementById("mainmenu"));
+
+var viewport = new Viewport(document.getElementById("viewport"));
