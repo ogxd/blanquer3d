@@ -3,9 +3,12 @@ import { arrayRemove } from "../core/Utils";
 type Predicate<T> = (item: T) => void;
 
 class EventSubscriber<EventData> {
+  private lambdas = new Map<Predicate<EventData>, any>();
+
   private _listeners: Predicate<EventData>[] = [];
 
-  subscribe(predicate: Predicate<EventData>) {
+  subscribe(owner: any, predicate: Predicate<EventData>) {
+    predicate = predicate.bind(owner);
     this._listeners.push(predicate);
   }
 

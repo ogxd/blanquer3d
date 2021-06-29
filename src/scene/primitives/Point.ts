@@ -4,7 +4,11 @@ import { property } from "../../core/PropertyDecorator";
 
 class Point extends SceneObject {
   @property()
-  position: Vector3 = new Vector3(0, 0, 0);
+  position: Vector3;
+
+  initialize() {
+    this.position = new Vector3(0, 0, 0);
+  }
 }
 
 export default Point;

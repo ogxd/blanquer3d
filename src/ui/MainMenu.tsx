@@ -16,7 +16,7 @@ class MainMenu extends Component {
             labelOff={"2D"}
             labelOn={"3D"}
             ref={(input) => {
-              input?.onStateChanged.subscribe(this.onViewModeChanged);
+              input?.onStateChanged.subscribe(this, this.onViewModeChanged);
             }}
           />
         </div>

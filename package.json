@@ -17,6 +17,7 @@
     "three": "^0.129.0",
     "three-spritetext": "^1.6.2",
     "three-text2d": "^0.6.0",
+    "three.meshline": "^1.3.0",
     "typescript": "^4.3.4",
     "web-vitals": "^1.1.2"
   },

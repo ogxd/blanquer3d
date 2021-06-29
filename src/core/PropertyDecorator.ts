@@ -15,11 +15,12 @@ export function property(): any {
         return this[key];
       },
       set(newValue: any) {
+        console.log(newValue);
         // Clamp the value and write it onto the target instance
         // using the unique symbol from above
         this[key]?.onPropertyChanged?.unsubscribe(lambdas[this]);
         this[key] = newValue;
-        this[key].onPropertyChanged?.subscribe(
+        this[key]?.onPropertyChanged?.subscribe(
           (lambdas[this] = () => this.onPropertyChanged.dispatch(propertyKey))
         );
         this.onPropertyChanged?.dispatch(propertyKey);

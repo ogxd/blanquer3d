@@ -20,6 +20,8 @@ abstract class SceneObject implements ISceneObject {
   getVisibility(): boolean {
     return this._isVisible;
   }
+
+  abstract initialize();
 }
 
 export default SceneObject;

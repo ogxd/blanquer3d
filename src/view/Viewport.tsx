@@ -4,6 +4,10 @@ import OrbitControls from "./OrbitControls";
 // import { SpriteText2D, MeshText2D, textAlign } from "three-text2d";
 import SpriteText from "three-spritetext";
 
+import Point from "../scene/primitives/Point";
+import Visual from "./visuals/Visual";
+import PointVisual from "./visuals/PointVisual";
+
 export interface ViewportProps {}
 
 export interface ViewportState {}
@@ -11,25 +15,23 @@ export interface ViewportState {}
 class Viewport {
   private _renderer: Three.WebGLRenderer;
   private _camera: Three.PerspectiveCamera;
-  private _scene: Three.Scene;
+  private _threeScene: Three.Scene;
   private _resize: any;
   private _element: HTMLElement;
+  private _scene: Scene;
 
-  constructor(element: HTMLElement) {
+  constructor(element: HTMLElement, scene: Scene) {
     Viewport._instance = this;
+
+    this._scene = scene;
 
     this._element = element;
 
     // Create an empty scene
-    this._scene = new Three.Scene();
+    this._threeScene = new Three.Scene();
 
     // Create a basic perspective camera
-    this._camera = new Three.PerspectiveCamera(
-      45,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      10000
-    );
+    this._camera = new Three.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
     this._camera.up.set(0, 0, 1);
 
     // Create a renderer
@@ -40,23 +42,19 @@ class Viewport {
     // Grid
     var gridXZ = new Three.GridHelper(100, 10, "#ff0000", "#999999");
     gridXZ.rotateX(Math.PI / 2);
-    this._scene.add(gridXZ);
+    this._threeScene.add(gridXZ);
 
     // Render Loop
     this.render3d();
 
-    Scene.getInstance().onObjectAdded.subscribe(() => {});
+    //Scene.getInstance().onObjectAdded.subscribe(() => {}, this);
 
     window.addEventListener(
       "resize",
       (this._resize = () => {
-        this._camera.aspect =
-          this._element.offsetWidth / this._element.offsetHeight;
+        this._camera.aspect = this._element.offsetWidth / this._element.offsetHeight;
         this._camera.updateProjectionMatrix();
-        this._renderer.setSize(
-          this._element.offsetWidth,
-          this._element.offsetHeight
-        );
+        this._renderer.setSize(this._element.offsetWidth, this._element.offsetHeight);
       })
     );
 
@@ -66,43 +64,27 @@ class Viewport {
 
     // Light
     var ambientLight = new Three.AmbientLight(0xffffff);
-    this._scene.add(ambientLight);
-    var pointLight = new Three.PointLight(0xffffff);
-    pointLight.position.set(0, 300, 200);
-    this._scene.add(pointLight);
-
-    // Geometry
-    var geometry = new Three.PlaneGeometry(30, 30);
-    const texture = new Three.TextureLoader().load("res/point.png");
-    var material = new Three.MeshBasicMaterial({
-      map: texture,
-    });
-    material.side = Three.DoubleSide;
-    material.transparent = true;
-    this._billboard = new Three.Mesh(geometry, material);
-    //this._scene.add(this._billboard);
-
-    // Text test
-    // var text = new MeshText2D("RIGHT", {
-    //   align: textAlign.right,
-    //   font: "30px Arial",
-    //   fillStyle: "#000000",
-    //   antialias: true,
-    // });
-    this._text = new SpriteText("A", 10, "#000000");
-    this._text.center = new Three.Vector2(-0.3, -0.3);
-    this._scene.add(this._text);
-
-    this._text2 = new SpriteText("+", 10, "#000000");
-    //this._text2.center = new Three.Vector2(0, 0);
-    this._scene.add(this._text2);
+    this._threeScene.add(ambientLight);
 
     this.setViewMode(false);
+
+    this._scene.onObjectAdded.subscribe(this, (sceneObject) => {
+      switch (sceneObject.constructor) {
+        case Point:
+          var pv = new PointVisual(sceneObject as Point, this._threeScene);
+          pv.onCreate();
+          break;
+      }
+    });
+
+    var pt = new Point();
+    this._scene.addObject(pt);
+
+    pt.initialize();
   }
 
-  private _billboard: Three.Mesh;
-  private _text: SpriteText;
-  private _text2: SpriteText;
+  private _visuals: any[];
+
   private _controls: OrbitControls;
 
   unmount() {
@@ -112,30 +94,11 @@ class Viewport {
   render3d() {
     requestAnimationFrame(() => this.render3d());
 
-    var widthHalf = this._renderer.domElement.width / 2;
-    var heightHalf = this._renderer.domElement.height / 2;
+    // for (const visual of this._visuals) {
+    //   visual.onRender();
+    // }
 
-    if (this._billboard) {
-      this._billboard.lookAt(this._camera.position);
-      var distance =
-        0.0007 * this._billboard.position.distanceTo(this._camera.position);
-      this._billboard.scale.set(distance, distance, distance);
-
-      distance *= 35;
-      this._text.textHeight = distance;
-      this._text2.textHeight = distance;
-
-      // Projection 2D if required for DOM overlay approach
-      var vector = this._billboard.position.clone();
-      vector.project(this._camera);
-      vector.x = Math.floor(vector.x * widthHalf + widthHalf);
-      vector.y = -Math.floor(vector.y * heightHalf + heightHalf);
-      //console.log("x:" + vector.x);
-      //console.log("y:" + vector.y);
-    }
-
-    // Render the scene
-    this._renderer.render(this._scene, this._camera);
+    this._renderer.render(this._threeScene, this._camera);
   }
 
   setViewMode(mode3D: boolean) {
