@@ -1,6 +1,5 @@
 .box {
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
-    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   border-radius: 5px;
   background: #ffffff;
 }
@@ -24,7 +23,8 @@
   position: absolute;
   top: 50px;
   right: 25px;
-  width: 200px;
+  width: 250px;
+  padding: 10px;
 }
 
 #mainmenu {
@@ -33,4 +33,14 @@
   left: 0px;
   width: 100vw;
   height: 25px;
+}
+
+.rows {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+}
+
+.prop {
+  padding: 10px;
 }

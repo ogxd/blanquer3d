@@ -18,6 +18,8 @@ import Scene from "../scene/Scene";
 import SceneObject from "../scene/SceneObject";
 import Point from "../scene/primitives/Point";
 import Segment from "../scene/primitives/Segment";
+import TextField from "@material-ui/core/TextField";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -31,7 +33,7 @@ const styles = (theme: Theme) =>
     },
   });
 
-class Hierarchy extends Component {
+class Inspector extends Component {
   constructor(props) {
     super(props);
     Scene.getInstance().onObjectAdded.subscribe(this, this.onObjectAdded);
@@ -54,6 +56,7 @@ class Hierarchy extends Component {
 
   getVisuals() {
     var l = [];
+
     Scene.getInstance().forEach((value: SceneObject, index: number, array: SceneObject[]) => {
       l.push(
         <ListItem
@@ -72,8 +75,6 @@ class Hierarchy extends Component {
     //const { classes } = this.props;
 
     //const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-    console.log("render");
 
     const setAnchorEl = (anchor: any) => {
       this.setState({ anchorEl: anchor });
@@ -96,38 +97,48 @@ class Hierarchy extends Component {
         >
           {this.getVisuals()}
         </List>
-        <Grid container justify="center">
-          <Button color="primary" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-            Add
-          </Button>
-          <Menu
-            id="simple-menu"
-            anchorEl={this.state.anchorEl}
-            keepMounted
-            open={Boolean(this.state.anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem
-              onClick={() => {
-                Scene.getInstance().addObject(new Point());
-                handleClose();
+
+        <div className="rows">
+          <div className="prop">
+            <TextField
+              id="standard-number"
+              type="number"
+              InputLabelProps={{
+                shrink: true,
               }}
-            >
-              Point
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                Scene.getInstance().addObject(new Segment());
-                handleClose();
+              InputProps={{
+                startAdornment: <InputAdornment position="start">X</InputAdornment>,
               }}
-            >
-              Segment
-            </MenuItem>
-          </Menu>
-        </Grid>
+            />
+          </div>
+          <div className="prop">
+            <TextField
+              id="standard-number"
+              type="number"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              InputProps={{
+                startAdornment: <InputAdornment position="start">Y</InputAdornment>,
+              }}
+            />
+          </div>
+          <div className="prop">
+            <TextField
+              id="standard-number"
+              type="number"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              InputProps={{
+                startAdornment: <InputAdornment position="start">Z</InputAdornment>,
+              }}
+            />
+          </div>
+        </div>
       </React.Fragment>
     );
   }
 }
 
-export default withStyles(styles)(Hierarchy);
+export default withStyles(styles)(Inspector);
