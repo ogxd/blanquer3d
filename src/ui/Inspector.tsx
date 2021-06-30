@@ -55,20 +55,7 @@ class Inspector extends Component {
   }
 
   getVisuals() {
-    var l = [];
-
-    Scene.getInstance().forEach((value: SceneObject, index: number, array: SceneObject[]) => {
-      l.push(
-        <ListItem
-          button
-          selected={Scene.getInstance().getSelected() === value}
-          onClick={(event) => Scene.getInstance().setSelected(value)}
-        >
-          <ListItemText key={index} primary={"" + value.constructor.name} />
-        </ListItem>
-      );
-    });
-    return l;
+    return <h1>{Scene.getInstance().getSelected()?.constructor.name}</h1>;
   }
 
   render(): JSX.Element {
