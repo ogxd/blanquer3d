@@ -9,8 +9,8 @@ class PropertyDrawers {
     // Do nothing, but actually is useful for property drawers to avoid being optimized out
   }
 
-  @propertyDrawer
-  static drawVector3(object: Vector3) {
+  @propertyDrawer(Vector3)
+  static drawVector3(object: any, propName: string) {
     return (
       <div className="rows">
         <div className="prop">
@@ -23,7 +23,10 @@ class PropertyDrawers {
             InputProps={{
               startAdornment: <InputAdornment position="start">x</InputAdornment>,
             }}
-            // onChange={(event) => (object.x = event.target.value)}
+            onChange={(event) => {
+              const old: Vector3 = object[propName];
+              object[propName] = new Vector3(+event.target.value, old.y, old.z);
+            }}
           />
         </div>
         <div className="prop">
@@ -35,6 +38,10 @@ class PropertyDrawers {
             }}
             InputProps={{
               startAdornment: <InputAdornment position="start">y</InputAdornment>,
+            }}
+            onChange={(event) => {
+              const old: Vector3 = object[propName];
+              object[propName] = new Vector3(old.x, +event.target.value, old.z);
             }}
           />
         </div>
@@ -49,6 +56,10 @@ class PropertyDrawers {
               InputProps={{
                 startAdornment: <InputAdornment position="start">z</InputAdornment>,
               }}
+              onChange={(event) => {
+                const old: Vector3 = object[propName];
+                object[propName] = new Vector3(old.x, old.y, +event.target.value);
+              }}
             />
           </div>
         )}
@@ -56,8 +67,8 @@ class PropertyDrawers {
     );
   }
 
-  @propertyDrawer
-  static drawPoint(object: Point) {
+  @propertyDrawer(Point)
+  static drawPoint(object: any, propName: string) {
     return <div>A point</div>;
   }
 }

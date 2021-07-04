@@ -44,6 +44,7 @@ class Hierarchy extends Component {
   };
 
   onObjectAdded(object: SceneObject) {
+    this.setState(this.state);
     this.render();
   }
 
@@ -72,10 +73,6 @@ class Hierarchy extends Component {
   }
 
   render(): JSX.Element {
-    //const { classes } = this.props;
-
-    //const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
     console.log("render");
 
     const setAnchorEl = (anchor: any) => {

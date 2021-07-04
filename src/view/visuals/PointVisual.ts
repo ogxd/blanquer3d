@@ -1,7 +1,6 @@
 import Point from "../../scene/primitives/Point";
 import Visual from "./Visual";
 import * as Three from "three";
-import Vector3 from "../../maths/Vector3";
 
 class PointVisual extends Visual<Point> {
   private _sphere: Three.Mesh;

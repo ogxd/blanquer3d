@@ -56,11 +56,10 @@ class Inspector extends Component {
     properties.forEach((property) => {
       const propertyName = property.name;
       const propertyType = property.type;
-      const propertyValue = selectedObject[propertyName];
 
       //console.log(`name:${propertyName} type:${propertyType} value:${propertyValue}`);
 
-      elements.push(<ListItem key={key}>{drawProperty(propertyType, propertyValue)}</ListItem>);
+      elements.push(<ListItem key={key}>{drawProperty(selectedObject, propertyName, propertyType)}</ListItem>);
       key++;
     });
 

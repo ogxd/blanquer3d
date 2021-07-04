@@ -19,12 +19,9 @@ class Viewport {
   private _threeScene: Three.Scene;
   private _resize: any;
   private _element: HTMLElement;
-  private _scene: Scene;
 
-  constructor(element: HTMLElement, scene: Scene) {
+  constructor(element: HTMLElement) {
     Viewport._instance = this;
-
-    this._scene = scene;
 
     this._element = element;
 
@@ -70,7 +67,7 @@ class Viewport {
     this.setViewMode(false);
     MainMenu.getInstance().onViewModeChanged.subscribe(this, this.setViewMode);
 
-    this._scene.onObjectAdded.subscribe(this, (sceneObject) => {
+    Scene.getInstance().onObjectAdded.subscribe(this, (sceneObject) => {
       switch (sceneObject.constructor) {
         case Point:
           var pv = new PointVisual(sceneObject as Point, this._threeScene);
@@ -78,11 +75,6 @@ class Viewport {
           break;
       }
     });
-
-    var pt = new Point();
-    this._scene.addObject(pt);
-
-    pt.initialize();
   }
 
   private _controls: OrbitControls;
