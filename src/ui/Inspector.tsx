@@ -1,25 +1,14 @@
 import React, { Component } from "react";
 import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
-import Grid from "@material-ui/core/Grid";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Collapse from "@material-ui/core/Collapse";
-import CropDin from "@material-ui/icons/CropDin";
-import FolderOpen from "@material-ui/icons/FolderOpen";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import Clear from "@material-ui/icons/Clear";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import Scene from "../scene/Scene";
+import { drawProperty } from "../core/PropertyDrawer";
 import SceneObject from "../scene/SceneObject";
-import Point from "../scene/primitives/Point";
-import Segment from "../scene/primitives/Segment";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import PropertyDrawers from "./PropertyDrawers";
+import MainMenu from "./MainMenu";
+import { ListItem } from "@material-ui/core";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -36,8 +25,10 @@ const styles = (theme: Theme) =>
 class Inspector extends Component {
   constructor(props) {
     super(props);
-    Scene.getInstance().onObjectAdded.subscribe(this, this.onObjectAdded);
-    Scene.getInstance().onObjectSelected.subscribe(this, this.onObjectSelected);
+    PropertyDrawers.initialize(); // Force static property drawers initialization
+    Scene.getInstance().onObjectAdded.subscribe(this, (object) => this.refresh());
+    Scene.getInstance().onObjectSelected.subscribe(this, (object) => this.refresh());
+    MainMenu.getInstance().onViewModeChanged.subscribe(this, (mode) => this.refresh());
   }
 
   state = {
@@ -45,24 +36,45 @@ class Inspector extends Component {
     anchorEl: null,
   };
 
-  onObjectAdded(object: SceneObject) {
-    this.render();
-  }
-
-  onObjectSelected(object: SceneObject) {
+  refresh() {
     this.setState(this.state);
     this.render();
   }
 
   getVisuals() {
-    return <h1>{Scene.getInstance().getSelected()?.constructor.name}</h1>;
+    const selectedObject: any = Scene.getInstance().getSelected();
+
+    if (!selectedObject) {
+      return <h2>Nothing Selected</h2>;
+    }
+
+    const elements = [];
+    const properties: any[] = selectedObject.properties;
+
+    let key = 0;
+
+    properties.forEach((property) => {
+      const propertyName = property.name;
+      const propertyType = property.type;
+      const propertyValue = selectedObject[propertyName];
+
+      //console.log(`name:${propertyName} type:${propertyType} value:${propertyValue}`);
+
+      elements.push(<ListItem key={key}>{drawProperty(propertyType, propertyValue)}</ListItem>);
+      key++;
+    });
+
+    return (
+      <React.Fragment>
+        <h2 key="header">{selectedObject.constructor.name}</h2>
+        <List component="nav" aria-labelledby="nested-list-subheader">
+          {elements}
+        </List>
+      </React.Fragment>
+    );
   }
 
   render(): JSX.Element {
-    //const { classes } = this.props;
-
-    //const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
     const setAnchorEl = (anchor: any) => {
       this.setState({ anchorEl: anchor });
     };
@@ -75,56 +87,7 @@ class Inspector extends Component {
       setAnchorEl(event.currentTarget);
     };
 
-    return (
-      <React.Fragment>
-        <List
-          component="nav"
-          aria-labelledby="nested-list-subheader"
-          // className={classes.root}
-        >
-          {this.getVisuals()}
-        </List>
-
-        <div className="rows">
-          <div className="prop">
-            <TextField
-              id="standard-number"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              InputProps={{
-                startAdornment: <InputAdornment position="start">X</InputAdornment>,
-              }}
-            />
-          </div>
-          <div className="prop">
-            <TextField
-              id="standard-number"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              InputProps={{
-                startAdornment: <InputAdornment position="start">Y</InputAdornment>,
-              }}
-            />
-          </div>
-          <div className="prop">
-            <TextField
-              id="standard-number"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              InputProps={{
-                startAdornment: <InputAdornment position="start">Z</InputAdornment>,
-              }}
-            />
-          </div>
-        </div>
-      </React.Fragment>
-    );
+    return <React.Fragment>{this.getVisuals()}</React.Fragment>;
   }
 }
 

@@ -3,9 +3,7 @@ import { arrayRemove } from "../core/Utils";
 type Predicate<T> = (item: T) => void;
 
 class EventSubscriber<EventData> {
-  private lambdas = new Map<Predicate<EventData>, any>();
-
-  private _listeners: Predicate<EventData>[] = [];
+  private _listeners = new Array<Predicate<EventData>>();
 
   subscribe(owner: any, predicate: Predicate<EventData>) {
     predicate = predicate.bind(owner);
@@ -17,9 +15,9 @@ class EventSubscriber<EventData> {
   }
 
   dispatch(eventData: EventData) {
-    for (const listener of this._listeners) {
+    this._listeners.forEach((listener) => {
       listener(eventData);
-    }
+    });
   }
 }
 

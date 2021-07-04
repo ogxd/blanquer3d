@@ -3,10 +3,10 @@ import Point from "./Point";
 import { property } from "../../core/PropertyDecorator";
 
 class Segment extends SceneObject {
-  @property()
+  @property
   point1: Point;
 
-  @property()
+  @property
   point2: Point;
 
   initialize() {}

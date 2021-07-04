@@ -7,6 +7,7 @@ import SpriteText from "three-spritetext";
 import Point from "../scene/primitives/Point";
 import Visual from "./visuals/Visual";
 import PointVisual from "./visuals/PointVisual";
+import MainMenu from "../ui/MainMenu";
 
 export interface ViewportProps {}
 
@@ -67,6 +68,7 @@ class Viewport {
     this._threeScene.add(ambientLight);
 
     this.setViewMode(false);
+    MainMenu.getInstance().onViewModeChanged.subscribe(this, this.setViewMode);
 
     this._scene.onObjectAdded.subscribe(this, (sceneObject) => {
       switch (sceneObject.constructor) {
@@ -82,8 +84,6 @@ class Viewport {
 
     pt.initialize();
   }
-
-  private _visuals: any[];
 
   private _controls: OrbitControls;
 
@@ -102,7 +102,6 @@ class Viewport {
   }
 
   setViewMode(mode3D: boolean) {
-    // Todo : freeze / unfreeze orbit controls and simply rotate camera
     if (mode3D) {
       this._camera.position.y = -100;
       this._camera.position.z = 100;
@@ -117,9 +116,9 @@ class Viewport {
     }
   }
 
-  static _instance: Viewport = null;
+  private static _instance: Viewport = null;
   static getInstance(): Viewport {
-    return this._instance;
+    return Viewport._instance;
   }
 }
 

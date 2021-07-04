@@ -3,7 +3,7 @@ import Vector3 from "../../maths/Vector3";
 import { property } from "../../core/PropertyDecorator";
 
 class Point extends SceneObject {
-  @property()
+  @property
   position: Vector3;
 
   initialize() {

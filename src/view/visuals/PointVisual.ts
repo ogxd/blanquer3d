@@ -18,7 +18,7 @@ class PointVisual extends Visual<Point> {
   }
 
   onRender() {
-    console.log(this._object);
+    //console.log(this._object);
   }
 
   onVisibilityChanged(isVisible: boolean) {
@@ -27,7 +27,6 @@ class PointVisual extends Visual<Point> {
 
   onPropertyChanged(name: string) {
     if (name === "position") {
-      console.log(this);
       var pos = this._object.position;
       this._sphere.position.set(pos.x, pos.y, pos.z);
     }

@@ -54,9 +54,11 @@ class Hierarchy extends Component {
 
   getVisuals() {
     var l = [];
+    let key = 0;
     Scene.getInstance().forEach((value: SceneObject, index: number, array: SceneObject[]) => {
       l.push(
         <ListItem
+          key={key}
           button
           selected={Scene.getInstance().getSelected() === value}
           onClick={(event) => Scene.getInstance().setSelected(value)}
@@ -64,6 +66,7 @@ class Hierarchy extends Component {
           <ListItemText key={index} primary={"" + value.constructor.name} />
         </ListItem>
       );
+      key++;
     });
     return l;
   }

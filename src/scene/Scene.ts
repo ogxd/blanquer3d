@@ -17,13 +17,14 @@ class Scene implements IScene {
   }
 
   setSelected(selected: SceneObject) {
-    if (this._selected != selected) {
+    if (this._selected !== selected) {
       this._selected = selected;
       this.onObjectSelected.dispatch(selected);
     }
   }
 
   addObject(object: SceneObject) {
+    object.initialize();
     this._objects.push(object);
     this.onObjectAdded.dispatch(object);
   }
