@@ -6,11 +6,16 @@ class EventSubscriber<EventData> {
   private _listeners = new Array<Predicate<EventData>>();
 
   subscribe(owner: any, predicate: Predicate<EventData>) {
-    predicate = predicate.bind(owner);
+    if (owner) {
+      predicate = predicate.bind(owner);
+    }
     this._listeners.push(predicate);
   }
 
-  unsubscribe(predicate: Predicate<EventData>) {
+  unsubscribe(owner: any, predicate: Predicate<EventData>) {
+    if (owner) {
+      predicate = predicate.bind(owner);
+    }
     arrayRemove(this._listeners, predicate);
   }
 

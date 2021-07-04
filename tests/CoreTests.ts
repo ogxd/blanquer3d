@@ -11,7 +11,7 @@ describe("core", () => {
       k += n;
     }
 
-    eventSubscriber.subscribe(onEvent);
+    eventSubscriber.subscribe(null, onEvent);
     expect(k).to.be.equal(0);
 
     eventSubscriber.dispatch(1);
@@ -20,7 +20,7 @@ describe("core", () => {
     eventSubscriber.dispatch(3);
     expect(k).to.be.equal(4);
 
-    eventSubscriber.unsubscribe(onEvent);
+    eventSubscriber.unsubscribe(null, onEvent);
     expect(k).to.be.equal(4);
 
     eventSubscriber.dispatch(7);
@@ -29,7 +29,7 @@ describe("core", () => {
 
   it("PropertyDecorator can handle property changes", () => {
     class MyObject {
-      @property()
+      @property
       myProperty: string;
       readonly onPropertyChanged = new EventSubscriber<string>();
     }
@@ -38,7 +38,7 @@ describe("core", () => {
 
     var result: string = "";
 
-    myObject.onPropertyChanged.subscribe((x) => {
+    myObject.onPropertyChanged.subscribe(null, (x) => {
       result += `[${x}=${myObject[x]}]`;
     });
 
@@ -50,7 +50,7 @@ describe("core", () => {
 
   it("PropertyDecorator can handle nested property changes", () => {
     class MyNestedObject {
-      @property()
+      @property
       myNestedProperty: string;
       readonly onPropertyChanged = new EventSubscriber<string>();
       toString() {
@@ -59,7 +59,7 @@ describe("core", () => {
     }
 
     class MyObject {
-      @property()
+      @property
       myProperty: MyNestedObject;
       readonly onPropertyChanged = new EventSubscriber<string>();
     }
@@ -70,7 +70,7 @@ describe("core", () => {
 
     myObject.myProperty = new MyNestedObject();
 
-    myObject.onPropertyChanged.subscribe((x) => {
+    myObject.onPropertyChanged.subscribe(null, (x) => {
       result += `[${x}=${myObject[x]}]`;
     });
 
@@ -78,7 +78,7 @@ describe("core", () => {
 
     expect(result).to.be.equal("[myProperty=nestedhello]");
 
-    // Now we test that changing the object corretly unsubcribes the old object property changed events
+    // Now we test that changing the object correctly unsubcribes the old object property changed events
     var newNestedObject = new MyNestedObject();
     newNestedObject.myNestedProperty = "byebye";
 
@@ -88,8 +88,6 @@ describe("core", () => {
     // This should not trigger an event since the old object is not connected to myObject anymore
     oldNestedObject.myNestedProperty = "azerty";
 
-    expect(result).to.be.equal(
-      "[myProperty=nestedhello][myProperty=nestedbyebye]"
-    );
+    expect(result).to.be.equal("[myProperty=nestedhello][myProperty=nestedbyebye]");
   });
 });

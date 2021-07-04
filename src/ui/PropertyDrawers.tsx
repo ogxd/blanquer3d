@@ -23,6 +23,7 @@ class PropertyDrawers {
             InputProps={{
               startAdornment: <InputAdornment position="start">x</InputAdornment>,
             }}
+            // onChange={(event) => (object.x = event.target.value)}
           />
         </div>
         <div className="prop">

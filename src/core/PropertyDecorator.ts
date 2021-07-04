@@ -14,24 +14,32 @@ export function property(target: any, propertyKey: string | symbol): any {
   }
 
   var type = Reflect.getMetadata("design:type", target, propertyKey);
-  console.log(`Property on object: ${target}, with name: ${String(propertyKey)}, of type: ${type.name}`);
+  //console.log(`Property on object: ${target}, with name: ${String(propertyKey)}, of type: ${type.name}`);
 
   target.properties.push({ name: propertyKey, type: type.name });
 
-  // We can return a property descriptor that is used to define
-  // a property on the target given the `propertyKey`.
   return {
     get(): any {
-      // Read the value from the target instance using the
-      // unique symbol from above
       return this[key];
     },
     set(newValue: any) {
-      // Clamp the value and write it onto the target instance
-      // using the unique symbol from above
-      this[key]?.onPropertyChanged?.unsubscribe(lambdas[this]);
+      // Unsubscribe if there was any nested subscription
+      if (this[key]?.onPropertyChanged && lambdas[this]) {
+        this[key].onPropertyChanged.unsubscribe(null, lambdas[this]);
+      }
+
+      // Set value
       this[key] = newValue;
-      this[key]?.onPropertyChanged?.subscribe((lambdas[this] = () => this.onPropertyChanged.dispatch(propertyKey)));
+
+      // Subscribe nested subscriptions
+      if (this[key]?.onPropertyChanged) {
+        this[key]?.onPropertyChanged?.subscribe(
+          null,
+          (lambdas[this] = () => this.onPropertyChanged.dispatch(propertyKey))
+        );
+      }
+
+      // Trigger property changed event
       this.onPropertyChanged?.dispatch(propertyKey);
     },
   };
