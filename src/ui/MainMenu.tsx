@@ -42,4 +42,5 @@ class MainMenu extends Component {
     return MainMenu._instance;
   }
 }
+
 export default MainMenu;

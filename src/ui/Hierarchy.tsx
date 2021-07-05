@@ -3,14 +3,7 @@ import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import Grid from "@material-ui/core/Grid";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import Collapse from "@material-ui/core/Collapse";
-import CropDin from "@material-ui/icons/CropDin";
-import FolderOpen from "@material-ui/icons/FolderOpen";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import Clear from "@material-ui/icons/Clear";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -34,8 +27,9 @@ const styles = (theme: Theme) =>
 class Hierarchy extends Component {
   constructor(props) {
     super(props);
-    Scene.getInstance().onObjectAdded.subscribe(this, this.onObjectAdded);
-    Scene.getInstance().onObjectSelected.subscribe(this, this.onObjectSelected);
+    Scene.getInstance().onObjectAdded.subscribe(this, (x) => this.refresh());
+    Scene.getInstance().onObjectSelected.subscribe(this, (x) => this.refresh());
+    Hierarchy._instance = this;
   }
 
   state = {
@@ -43,12 +37,7 @@ class Hierarchy extends Component {
     anchorEl: null,
   };
 
-  onObjectAdded(object: SceneObject) {
-    this.setState(this.state);
-    this.render();
-  }
-
-  onObjectSelected(object: SceneObject) {
+  refresh() {
     this.setState(this.state);
     this.render();
   }
@@ -64,7 +53,7 @@ class Hierarchy extends Component {
           selected={Scene.getInstance().getSelected() === value}
           onClick={(event) => Scene.getInstance().setSelected(value)}
         >
-          <ListItemText key={index} primary={"" + value.constructor.name} />
+          <ListItemText key={index} primary={value["name"]} />
         </ListItem>
       );
       key++;
@@ -127,6 +116,11 @@ class Hierarchy extends Component {
         </Grid>
       </React.Fragment>
     );
+  }
+
+  private static _instance: Hierarchy = null;
+  public static getInstance(): Hierarchy {
+    return Hierarchy._instance;
   }
 }
 

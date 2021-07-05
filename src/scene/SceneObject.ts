@@ -1,8 +1,7 @@
-import EventSubscriber from "../core/EventSubscriber";
+import EventSubscriber from "src/core/EventSubscriber";
+import { property } from "src/core/PropertyDecorator";
 
-interface ISceneObject {}
-
-abstract class SceneObject implements ISceneObject {
+abstract class SceneObject {
   private _isVisible: boolean = true;
 
   readonly onVisibilityChanged = new EventSubscriber<boolean>();

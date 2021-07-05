@@ -3,6 +3,11 @@ import { propertyDrawer } from "../core/PropertyDrawer";
 import Vector3 from "../maths/Vector3";
 import Point from "../scene/primitives/Point";
 import MainMenu from "./MainMenu";
+import Scene from "src/scene/Scene";
+import { Select } from "@material-ui/core";
+import { MenuItem } from "@material-ui/core";
+import { keys } from "@material-ui/core/styles/createBreakpoints";
+import Hierarchy from "./Hierarchy";
 
 class PropertyDrawers {
   static initialize() {
@@ -11,6 +16,7 @@ class PropertyDrawers {
 
   @propertyDrawer(Vector3)
   static drawVector3(object: any, propName: string) {
+    const current = object[propName];
     return (
       <div className="rows">
         <div className="prop">
@@ -69,7 +75,60 @@ class PropertyDrawers {
 
   @propertyDrawer(Point)
   static drawPoint(object: any, propName: string) {
-    return <div>A point</div>;
+    const elements = [];
+    let key = 0;
+    let current = -1;
+    const currentObject = object[propName];
+    const indexToObj = new Map<number, any>();
+    elements.push(
+      <MenuItem key={-1} value={-1}>
+        None
+      </MenuItem>
+    );
+    Scene.getInstance().forEach((x) => {
+      if (currentObject === x) {
+        current = key;
+      }
+      elements.push(
+        <MenuItem key={key} value={key}>
+          {x["name"]}
+        </MenuItem>
+      );
+      indexToObj[key] = x;
+      key++;
+    });
+    return (
+      <Select
+        value={current}
+        onChange={(event) => {
+          object[propName] = indexToObj[+event.target.value];
+        }}
+        displayEmpty
+        inputProps={{ "aria-label": "Without label" }}
+      >
+        {elements}
+      </Select>
+    );
+  }
+
+  @propertyDrawer(String)
+  static drawString(object: any, propName: string) {
+    console.log("draw string ! ");
+    return (
+      <TextField
+        key={object[propName]}
+        InputLabelProps={{
+          shrink: true,
+        }}
+        InputProps={{
+          startAdornment: <InputAdornment position="start">Name</InputAdornment>,
+        }}
+        defaultValue={object[propName]}
+        onChange={(event) => {
+          object[propName] = event.target.value;
+        }}
+      />
+    );
   }
 }
 

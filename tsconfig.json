@@ -1,10 +1,7 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "baseUrl": "./",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "declaration": true,
     "allowJs": true,
     "skipLibCheck": true,
@@ -12,7 +9,7 @@
     "strict": false,
     "strictNullChecks": false,
     "module": "esnext",
-    "target": "es2017",
+    "target": "es6",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "jsx": "react-jsx",
@@ -24,8 +21,5 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": [
-    "src",
-    "tests"
-  ]
+  "include": ["src", "tests"]
 }

@@ -14,7 +14,7 @@ export function property(target: any, propertyKey: string | symbol): any {
   }
 
   var type = Reflect.getMetadata("design:type", target, propertyKey);
-  //console.log(`Property on object: ${target}, with name: ${String(propertyKey)}, of type: ${type.name}`);
+  console.log(`Property on object: ${target}, with name: ${String(propertyKey)}, of type: ${type.name}`);
 
   target.properties.push({ name: propertyKey, type: type.name });
 

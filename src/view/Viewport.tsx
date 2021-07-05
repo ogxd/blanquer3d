@@ -8,6 +8,8 @@ import Point from "../scene/primitives/Point";
 import Visual from "./visuals/Visual";
 import PointVisual from "./visuals/PointVisual";
 import MainMenu from "../ui/MainMenu";
+import Segment from "src/scene/primitives/Segment";
+import SegmentVisual from "./visuals/SegmentVisual";
 
 export interface ViewportProps {}
 
@@ -72,6 +74,10 @@ class Viewport {
         case Point:
           var pv = new PointVisual(sceneObject as Point, this._threeScene);
           pv.onCreate();
+          break;
+        case Segment:
+          var sv = new SegmentVisual(sceneObject as Segment, this._threeScene);
+          sv.onCreate();
           break;
       }
     });

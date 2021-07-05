@@ -3,9 +3,6 @@ import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import Scene from "../scene/Scene";
 import { drawProperty } from "../core/PropertyDrawer";
-import SceneObject from "../scene/SceneObject";
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import PropertyDrawers from "./PropertyDrawers";
 import MainMenu from "./MainMenu";
 import { ListItem } from "@material-ui/core";
@@ -57,7 +54,7 @@ class Inspector extends Component {
       const propertyName = property.name;
       const propertyType = property.type;
 
-      //console.log(`name:${propertyName} type:${propertyType} value:${propertyValue}`);
+      //console.log(`name:${propertyName} type:${propertyType}`);
 
       elements.push(<ListItem key={key}>{drawProperty(selectedObject, propertyName, propertyType)}</ListItem>);
       key++;
