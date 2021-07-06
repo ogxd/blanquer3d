@@ -14,14 +14,14 @@
 
 #hierarchy {
   position: absolute;
-  top: 50px;
+  top: 150px;
   left: 25px;
   width: 200px;
 }
 
 #inspector {
   position: absolute;
-  top: 50px;
+  top: 150px;
   right: 25px;
   width: 250px;
   padding: 10px;
@@ -32,7 +32,6 @@
   top: 0px;
   left: 0px;
   width: 100vw;
-  height: 25px;
 }
 
 .rows {
@@ -41,6 +40,6 @@
   margin: 0 auto;
 }
 
-.prop {
+.spacer {
   padding: 10px;
 }

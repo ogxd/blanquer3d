@@ -2,6 +2,11 @@ import "reflect-metadata";
 
 //let propertyTypes = new Map<any, any>();
 
+interface IProperty {
+  name: string;
+  typeName: string;
+}
+
 export function property(target: any, propertyKey: string | symbol): any {
   // We need a unique key here because otherwise we would be
   // calling ourselves, and that results in an infinite loop.
@@ -15,6 +20,17 @@ export function property(target: any, propertyKey: string | symbol): any {
 
   var type = Reflect.getMetadata("design:type", target, propertyKey);
   console.log(`Property on object: ${target}, with name: ${String(propertyKey)}, of type: ${type.name}`);
+  console.log(target);
+
+  //target.properties.push({ name: propertyKey, type: type.name });
+
+  try {
+    Object.defineProperty(target, "properties", {
+      value: [],
+      writable: false,
+      configurable: false,
+    });
+  } catch {}
 
   target.properties.push({ name: propertyKey, type: type.name });
 

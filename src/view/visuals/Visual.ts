@@ -1,5 +1,6 @@
 import SceneObject from "../../scene/SceneObject";
 import * as Three from "three";
+import { property } from "src/core/PropertyDecorator";
 
 abstract class Visual<T extends SceneObject> {
   protected _object: T;

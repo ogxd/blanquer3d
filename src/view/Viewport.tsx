@@ -10,6 +10,7 @@ import PointVisual from "./visuals/PointVisual";
 import MainMenu from "../ui/MainMenu";
 import Segment from "src/scene/primitives/Segment";
 import SegmentVisual from "./visuals/SegmentVisual";
+import Grid from "src/view/utils/Grid";
 
 export interface ViewportProps {}
 
@@ -40,9 +41,10 @@ class Viewport {
     element.appendChild(this._renderer.domElement);
 
     // Grid
-    var gridXZ = new Three.GridHelper(100, 10, "#ff0000", "#999999");
-    gridXZ.rotateX(Math.PI / 2);
-    this._threeScene.add(gridXZ);
+    // var gridXZ = new Three.GridHelper(100, 10, "#ff0000", "#999999");
+    // gridXZ.rotateX(Math.PI / 2);
+    // this._threeScene.add(gridXZ);
+    this._threeScene.add(new Grid());
 
     // Render Loop
     this.render3d();
@@ -109,9 +111,22 @@ class Viewport {
       this._camera.position.x = 0;
       this._camera.position.y = 0;
       this._camera.position.z = 100;
-      this._camera.lookAt(new Three.Vector3(0, 0, 0));
+      this._camera.setRotationFromAxisAngle(new Three.Vector3(0, 0, 0), 0);
+      console.log(this._camera.rotation);
+      //this._camera.lookAt(new Three.Vector3(0, 0, 0));
       this._controls.enableRotate = false;
     }
+  }
+
+  takeScreenshort() {
+    var w = window.open("", "");
+    w.document.title = "Screenshot";
+    //w.document.body.style.backgroundColor = "red";
+    var img = new Image();
+    // Without 'preserveDrawingBuffer' set to true, we must render now
+    this._renderer.render(this._threeScene, this._camera);
+    img.src = this._renderer.domElement.toDataURL();
+    w.document.body.appendChild(img);
   }
 
   private static _instance: Viewport = null;

@@ -50,6 +50,11 @@ class Inspector extends Component {
 
     let key = 0;
 
+    console.log("iterate");
+    Object.keys(selectedObject).forEach((x) => {
+      console.log(x);
+    });
+
     properties.forEach((property) => {
       const propertyName = property.name;
       const propertyType = property.type;
