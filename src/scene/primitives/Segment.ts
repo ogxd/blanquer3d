@@ -1,20 +1,16 @@
-import SceneObject from "../SceneObject";
-import Point from "./Point";
-import { property } from "../../core/PropertyDecorator";
+import * as Blanquer3d from "src/blanquer3d";
 
-class Segment extends SceneObject {
-  @property
+export class Segment extends Blanquer3d.SceneObject {
+  @Blanquer3d.property
   name: string;
 
-  @property
-  point1: Point;
+  @Blanquer3d.property
+  point1: Blanquer3d.Point;
 
-  @property
-  point2: Point;
+  @Blanquer3d.property
+  point2: Blanquer3d.Point;
 
   initialize() {
     this.name = "New Segment";
   }
 }
-
-export default Segment;

@@ -1,7 +1,7 @@
 import * as Three from "three";
 import { MeshLine, MeshLineMaterial } from "three.meshline";
 
-class Grid extends Three.Group {
+export class Grid extends Three.Group {
   constructor() {
     super();
 
@@ -33,5 +33,3 @@ class Grid extends Three.Group {
     this.add(meshZ);
   }
 }
-
-export default Grid;

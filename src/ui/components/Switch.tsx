@@ -1,13 +1,10 @@
 import React, { Component } from "react";
 import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
 import FormGroup from "@material-ui/core/FormGroup";
-import MaterialSwitch, {
-  SwitchClassKey,
-  SwitchProps,
-} from "@material-ui/core/Switch";
+import MaterialSwitch, { SwitchClassKey, SwitchProps } from "@material-ui/core/Switch";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import EventSubscriber from "../../core/EventSubscriber";
+import * as Blanquer3d from "src/blanquer3d";
 
 interface Styles extends Partial<Record<SwitchClassKey, string>> {
   focusVisible?: string;
@@ -54,7 +51,7 @@ const AntSwitch = withStyles((theme: Theme) =>
   })
 )(MaterialSwitch);
 
-class Switch extends Component<MySwitchProps> {
+export class Switch extends Component<MySwitchProps> {
   public static defaultProps = {
     labelOn: "On",
     labelOff: "Off",
@@ -64,7 +61,7 @@ class Switch extends Component<MySwitchProps> {
     checked: false,
   };
 
-  readonly onStateChanged = new EventSubscriber<boolean>();
+  readonly onStateChanged = new Blanquer3d.EventSubscriber<boolean>();
 
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.state.checked = event.target.checked;
@@ -79,11 +76,7 @@ class Switch extends Component<MySwitchProps> {
           <Grid component="label" container alignItems="center" spacing={1}>
             <Grid item>{this.props.labelOff}</Grid>
             <Grid item>
-              <AntSwitch
-                checked={this.state.checked}
-                onChange={this.handleChange}
-                name="checkedC"
-              />
+              <AntSwitch checked={this.state.checked} onChange={this.handleChange} name="checkedC" />
             </Grid>
             <Grid item>{this.props.labelOn}</Grid>
           </Grid>
@@ -92,5 +85,3 @@ class Switch extends Component<MySwitchProps> {
     );
   }
 }
-
-export default Switch;

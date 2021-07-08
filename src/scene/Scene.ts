@@ -1,41 +1,37 @@
-import EventSubscriber from "../core/EventSubscriber";
-import { arrayRemove } from "../core/Utils";
-import SceneObject from "../scene/SceneObject";
+import * as Blanquer3d from "src/blanquer3d";
 
-interface IScene {}
+export class Scene {
+  private readonly _objects: Blanquer3d.SceneObject[] = [];
+  readonly onObjectAdded = new Blanquer3d.EventSubscriber<Blanquer3d.SceneObject>();
+  readonly onObjectRemoved = new Blanquer3d.EventSubscriber<Blanquer3d.SceneObject>();
+  readonly onObjectSelected = new Blanquer3d.EventSubscriber<Blanquer3d.SceneObject>();
 
-class Scene implements IScene {
-  private readonly _objects: SceneObject[] = [];
-  readonly onObjectAdded = new EventSubscriber<SceneObject>();
-  readonly onObjectRemoved = new EventSubscriber<SceneObject>();
-  readonly onObjectSelected = new EventSubscriber<SceneObject>();
-
-  private _selected: SceneObject;
+  private _selected: Blanquer3d.SceneObject;
 
   getSelected() {
     return this._selected;
   }
 
-  setSelected(selected: SceneObject) {
+  setSelected(selected: Blanquer3d.SceneObject) {
     if (this._selected !== selected) {
       this._selected = selected;
       this.onObjectSelected.dispatch(selected);
     }
   }
 
-  addObject(object: SceneObject) {
+  addObject(object: Blanquer3d.SceneObject) {
     object.initialize();
     this._objects.push(object);
     this.onObjectAdded.dispatch(object);
   }
 
-  removeObject(object: SceneObject) {
-    arrayRemove(this._objects, object);
+  removeObject(object: Blanquer3d.SceneObject) {
+    Blanquer3d.arrayRemove(this._objects, object);
     this.onObjectRemoved.dispatch(object);
     object.onDestroy.dispatch();
   }
 
-  forEach(func: (value: SceneObject, index: number, array: SceneObject[]) => void) {
+  forEach(func: (value: Blanquer3d.SceneObject, index: number, array: Blanquer3d.SceneObject[]) => void) {
     this._objects.forEach(func);
   }
 
@@ -47,5 +43,3 @@ class Scene implements IScene {
     return this._instance;
   }
 }
-
-export default Scene;

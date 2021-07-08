@@ -1,18 +1,14 @@
-import SceneObject from "../SceneObject";
-import Vector3 from "../../maths/Vector3";
-import { property } from "../../core/PropertyDecorator";
+import * as Blanquer3d from "src/blanquer3d";
 
-class Point extends SceneObject {
-  @property
+export class Point extends Blanquer3d.SceneObject {
+  @Blanquer3d.property
   name: string;
 
-  @property
-  position: Vector3;
+  @Blanquer3d.property
+  position: Blanquer3d.Vector3;
 
   initialize() {
-    this.position = new Vector3(0, 0, 0);
+    this.position = new Blanquer3d.Vector3(0, 0, 0);
     this.name = "New Point";
   }
 }
-
-export default Point;

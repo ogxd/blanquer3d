@@ -1,29 +1,29 @@
-import SceneObject from "../../scene/SceneObject";
+import * as Blanquer3d from "src/blanquer3d";
 import * as Three from "three";
-import { property } from "src/core/PropertyDecorator";
 
-abstract class Visual<T extends SceneObject> {
+export class VisualBase extends Three.Group {
+  onDestroy() {}
+  onCreate() {}
+  onSelected() {}
+  onDeselected() {}
+}
+
+export class Visual<T extends Blanquer3d.SceneObject> extends VisualBase {
   protected _object: T;
   protected _scene: Three.Scene;
 
-  constructor(object: T, scene: Three.Scene) {
+  constructor(object: T) {
+    super();
     this._object = object;
-    this._scene = scene;
 
     this._object.onPropertyChanged.subscribe(this, this.onPropertyChanged);
     this._object.onVisibilityChanged.subscribe(this, this.onVisibilityChanged);
     this._object.onDestroy.subscribe(this, this.onDestroy);
   }
 
-  abstract onPropertyChanged(name: string);
+  onPropertyChanged(name: string) {}
 
-  abstract onVisibilityChanged(isVisible: boolean);
+  onVisibilityChanged(isVisible: boolean) {}
 
-  abstract onCreate();
-
-  abstract onDestroy();
-
-  abstract onRender();
+  onRender() {}
 }
-
-export default Visual;

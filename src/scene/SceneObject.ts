@@ -1,12 +1,11 @@
-import EventSubscriber from "src/core/EventSubscriber";
-import { property } from "src/core/PropertyDecorator";
+import * as Blanquer3d from "src/blanquer3d";
 
-abstract class SceneObject {
+export abstract class SceneObject {
   private _isVisible: boolean = true;
 
-  readonly onVisibilityChanged = new EventSubscriber<boolean>();
-  readonly onPropertyChanged = new EventSubscriber<string>();
-  readonly onDestroy = new EventSubscriber<void>();
+  readonly onVisibilityChanged = new Blanquer3d.EventSubscriber<boolean>();
+  readonly onPropertyChanged = new Blanquer3d.EventSubscriber<string>();
+  readonly onDestroy = new Blanquer3d.EventSubscriber<void>();
 
   setVisibility(visibility: boolean) {
     var currentVisibility = this._isVisible;
@@ -22,5 +21,3 @@ abstract class SceneObject {
 
   abstract initialize();
 }
-
-export default SceneObject;

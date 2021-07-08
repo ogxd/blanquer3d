@@ -1,9 +1,11 @@
 import "reflect-metadata";
 
-let propertyDrawers = new Map<any, Function>();
+export class PropertyDrawersReg {
+  static propertyDrawers = new Map<any, Function>();
 
-export function drawProperty(object: any, propName: string, propType: string): any {
-  return propertyDrawers[propType](object, propName);
+  static drawProperty(object: any, propName: string, propType: string): any {
+    return PropertyDrawersReg.propertyDrawers[propType](object, propName);
+  }
 }
 
 export function propertyDrawer(type: any) {
@@ -12,6 +14,6 @@ export function propertyDrawer(type: any) {
     //var typesName = types.map((a) => a.name).join();
     //console.log(type.name);
     //console.log(`methodName:${methodName}, types:${typesName}`);
-    propertyDrawers[type.name] = target[methodName];
+    PropertyDrawersReg.propertyDrawers[type.name] = target[methodName];
   };
 }

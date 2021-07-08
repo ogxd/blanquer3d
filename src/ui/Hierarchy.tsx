@@ -7,10 +7,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import Scene from "../scene/Scene";
-import SceneObject from "../scene/SceneObject";
-import Point from "../scene/primitives/Point";
-import Segment from "../scene/primitives/Segment";
+import * as Blanquer3d from "src/blanquer3d";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -24,12 +21,12 @@ const styles = (theme: Theme) =>
     },
   });
 
-class Hierarchy extends Component {
+export class HierarchyUnstyled extends Component {
   constructor(props) {
     super(props);
-    Scene.getInstance().onObjectAdded.subscribe(this, (x) => this.refresh());
-    Scene.getInstance().onObjectSelected.subscribe(this, (x) => this.refresh());
-    Hierarchy._instance = this;
+    Blanquer3d.Scene.getInstance().onObjectAdded.subscribe(this, (x) => this.refresh());
+    Blanquer3d.Scene.getInstance().onObjectSelected.subscribe(this, (x) => this.refresh());
+    HierarchyUnstyled._instance = this;
   }
 
   state = {
@@ -45,25 +42,25 @@ class Hierarchy extends Component {
   getVisuals() {
     var l = [];
     let key = 0;
-    Scene.getInstance().forEach((value: SceneObject, index: number, array: SceneObject[]) => {
-      l.push(
-        <ListItem
-          key={key}
-          button
-          selected={Scene.getInstance().getSelected() === value}
-          onClick={(event) => Scene.getInstance().setSelected(value)}
-        >
-          <ListItemText key={index} primary={value["name"]} />
-        </ListItem>
-      );
-      key++;
-    });
+    Blanquer3d.Scene.getInstance().forEach(
+      (value: Blanquer3d.SceneObject, index: number, array: Blanquer3d.SceneObject[]) => {
+        l.push(
+          <ListItem
+            key={key}
+            button
+            selected={Blanquer3d.Scene.getInstance().getSelected() === value}
+            onClick={(event) => Blanquer3d.Scene.getInstance().setSelected(value)}
+          >
+            <ListItemText key={index} primary={value["name"]} />
+          </ListItem>
+        );
+        key++;
+      }
+    );
     return l;
   }
 
   render(): JSX.Element {
-    console.log("render");
-
     const setAnchorEl = (anchor: any) => {
       this.setState({ anchorEl: anchor });
     };
@@ -98,7 +95,7 @@ class Hierarchy extends Component {
           >
             <MenuItem
               onClick={() => {
-                Scene.getInstance().addObject(new Point());
+                Blanquer3d.Scene.getInstance().addObject(new Blanquer3d.Point());
                 handleClose();
               }}
             >
@@ -106,7 +103,7 @@ class Hierarchy extends Component {
             </MenuItem>
             <MenuItem
               onClick={() => {
-                Scene.getInstance().addObject(new Segment());
+                Blanquer3d.Scene.getInstance().addObject(new Blanquer3d.Segment());
                 handleClose();
               }}
             >
@@ -118,10 +115,10 @@ class Hierarchy extends Component {
     );
   }
 
-  private static _instance: Hierarchy = null;
-  public static getInstance(): Hierarchy {
-    return Hierarchy._instance;
+  private static _instance: HierarchyUnstyled = null;
+  public static getInstance(): HierarchyUnstyled {
+    return HierarchyUnstyled._instance;
   }
 }
 
-export default withStyles(styles)(Hierarchy);
+export const Hierarchy = withStyles(styles)(HierarchyUnstyled);

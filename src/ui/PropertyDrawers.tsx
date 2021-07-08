@@ -1,26 +1,19 @@
-import { InputAdornment, InputLabel, TextField } from "@material-ui/core";
 import React from "react";
-import { propertyDrawer } from "../core/PropertyDrawer";
-import Vector3 from "../maths/Vector3";
-import Point from "../scene/primitives/Point";
-import MainMenu from "./MainMenu";
-import Scene from "src/scene/Scene";
-import { Select } from "@material-ui/core";
-import { MenuItem } from "@material-ui/core";
-import Hierarchy from "./Hierarchy";
+import * as MaterialUI from "@material-ui/core";
+import * as Blanquer3d from "src/blanquer3d";
 
-class PropertyDrawers {
+export class PropertyDrawers {
   static initialize() {
     // Do nothing, but actually is useful for property drawers to avoid being optimized out
   }
 
-  @propertyDrawer(Vector3)
+  @Blanquer3d.propertyDrawer(Blanquer3d.Vector3)
   static drawVector3(object: any, propName: string) {
     const current = object[propName];
     return (
       <div className="rows">
         <div className="prop">
-          <TextField
+          <MaterialUI.TextField
             id="vector3-x"
             type="number"
             key={current.x}
@@ -28,18 +21,18 @@ class PropertyDrawers {
               shrink: true,
             }}
             InputProps={{
-              startAdornment: <InputAdornment position="start">x</InputAdornment>,
+              startAdornment: <MaterialUI.InputAdornment position="start">x</MaterialUI.InputAdornment>,
             }}
             defaultValue={current.x}
             onChange={(event) => {
-              const old: Vector3 = object[propName];
-              object[propName] = new Vector3(+event.target.value, old.y, old.z);
+              const old: Blanquer3d.Vector3 = object[propName];
+              object[propName] = new Blanquer3d.Vector3(+event.target.value, old.y, old.z);
             }}
           />
         </div>
         <div className="spacer" />
         <div className="prop">
-          <TextField
+          <MaterialUI.TextField
             id="vector3-y"
             type="number"
             key={current.y}
@@ -47,20 +40,20 @@ class PropertyDrawers {
               shrink: true,
             }}
             InputProps={{
-              startAdornment: <InputAdornment position="start">y</InputAdornment>,
+              startAdornment: <MaterialUI.InputAdornment position="start">y</MaterialUI.InputAdornment>,
             }}
             defaultValue={current.y}
             onChange={(event) => {
-              const old: Vector3 = object[propName];
-              object[propName] = new Vector3(old.x, +event.target.value, old.z);
+              const old: Blanquer3d.Vector3 = object[propName];
+              object[propName] = new Blanquer3d.Vector3(old.x, +event.target.value, old.z);
             }}
           />
         </div>
-        {MainMenu.getInstance().is3d() && (
+        {Blanquer3d.MainMenu.getInstance().is3d() && (
           <React.Fragment>
             <div className="spacer" />
             <div className="prop">
-              <TextField
+              <MaterialUI.TextField
                 id="vector3-z"
                 type="number"
                 key={current.z}
@@ -68,12 +61,12 @@ class PropertyDrawers {
                   shrink: true,
                 }}
                 InputProps={{
-                  startAdornment: <InputAdornment position="start">z</InputAdornment>,
+                  startAdornment: <MaterialUI.InputAdornment position="start">z</MaterialUI.InputAdornment>,
                 }}
                 defaultValue={current.z}
                 onChange={(event) => {
-                  const old: Vector3 = object[propName];
-                  object[propName] = new Vector3(old.x, old.y, +event.target.value);
+                  const old: Blanquer3d.Vector3 = object[propName];
+                  object[propName] = new Blanquer3d.Vector3(old.x, old.y, +event.target.value);
                 }}
               />
             </div>
@@ -83,7 +76,7 @@ class PropertyDrawers {
     );
   }
 
-  @propertyDrawer(Point)
+  @Blanquer3d.propertyDrawer(Blanquer3d.Point)
   static drawPoint(object: any, propName: string) {
     const elements = [];
     let key = 0;
@@ -91,18 +84,18 @@ class PropertyDrawers {
     const currentObject = object[propName];
     const indexToObj = new Map<number, any>();
     elements.push(
-      <MenuItem key={-1} value={-1}>
+      <MaterialUI.MenuItem key={-1} value={-1}>
         None
-      </MenuItem>
+      </MaterialUI.MenuItem>
     );
-    Scene.getInstance().forEach((x) => {
+    Blanquer3d.Scene.getInstance().forEach((x) => {
       if (currentObject === x) {
         current = key;
       }
       elements.push(
-        <MenuItem key={key} value={key}>
+        <MaterialUI.MenuItem key={key} value={key}>
           {x["name"]}
-        </MenuItem>
+        </MaterialUI.MenuItem>
       );
       indexToObj[key] = x;
       key++;
@@ -110,7 +103,7 @@ class PropertyDrawers {
     console.log("current: " + current);
     return (
       <React.Fragment>
-        <Select
+        <MaterialUI.Select
           key={current}
           defaultValue={current}
           onChange={(event) => {
@@ -121,25 +114,25 @@ class PropertyDrawers {
           inputProps={{
             "aria-label": "Without label",
           }}
-          startAdornment={<InputAdornment position="start">{propName}</InputAdornment>}
+          startAdornment={<MaterialUI.InputAdornment position="start">{propName}</MaterialUI.InputAdornment>}
         >
           {elements}
-        </Select>
+        </MaterialUI.Select>
       </React.Fragment>
     );
   }
 
-  @propertyDrawer(String)
+  @Blanquer3d.propertyDrawer(String)
   static drawString(object: any, propName: string) {
     console.log("draw string !");
     return (
-      <TextField
+      <MaterialUI.TextField
         key={object[propName]}
         InputLabelProps={{
           shrink: true,
         }}
         InputProps={{
-          startAdornment: <InputAdornment position="start">{propName}</InputAdornment>,
+          startAdornment: <MaterialUI.InputAdornment position="start">{propName}</MaterialUI.InputAdornment>,
         }}
         defaultValue={object[propName]}
         onChange={(event) => {
@@ -149,5 +142,3 @@ class PropertyDrawers {
     );
   }
 }
-
-export default PropertyDrawers;

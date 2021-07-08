@@ -1,12 +1,5 @@
 import "reflect-metadata";
 
-//let propertyTypes = new Map<any, any>();
-
-interface IProperty {
-  name: string;
-  typeName: string;
-}
-
 export function property(target: any, propertyKey: string | symbol): any {
   // We need a unique key here because otherwise we would be
   // calling ourselves, and that results in an infinite loop.
@@ -19,11 +12,13 @@ export function property(target: any, propertyKey: string | symbol): any {
   }
 
   var type = Reflect.getMetadata("design:type", target, propertyKey);
-  console.log(`Property on object: ${target}, with name: ${String(propertyKey)}, of type: ${type.name}`);
-  console.log(target);
+  //console.log(`Property on object: ${target}, with name: ${String(propertyKey)}, of type: ${type.name}`);
+  //console.log(target);
 
+  // Solution 1 (Do shit with inheritance :/)
   //target.properties.push({ name: propertyKey, type: type.name });
 
+  // Solution 2 (Also not working well with inheritance, but still better than 1)
   try {
     Object.defineProperty(target, "properties", {
       value: [],

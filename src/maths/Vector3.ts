@@ -1,4 +1,4 @@
-class Vector3 {
+export class Vector3 {
   constructor(x: number, y: number, z: number) {
     this.x = x;
     this.y = y;
@@ -17,5 +17,3 @@ class Vector3 {
     return `<x:${this.x} y:${this.y} z:${this.z}>`;
   }
 }
-
-export default Vector3;
