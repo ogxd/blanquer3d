@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import EventSubscriber from "../src/core/EventSubscriber";
+import { EventSubscriber } from "../src/core/EventSubscriber";
 import { property } from "../src/core/PropertyDecorator";
 
 describe("core", () => {
