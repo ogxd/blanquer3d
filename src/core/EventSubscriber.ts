@@ -1,8 +1,8 @@
-import { arrayRemove } from "../core/Utils";
+import * as Blanquer3d from "blanquer3d";
 
 type Predicate<T> = (item: T) => void;
 
-class EventSubscriber<EventData> {
+export class EventSubscriber<EventData> {
   private _listeners = new Array<Predicate<EventData>>();
 
   subscribe(owner: any, predicate: Predicate<EventData>) {
@@ -16,7 +16,7 @@ class EventSubscriber<EventData> {
     if (owner) {
       predicate = predicate.bind(owner);
     }
-    arrayRemove(this._listeners, predicate);
+    Blanquer3d.arrayRemove(this._listeners, predicate);
   }
 
   dispatch(eventData: EventData) {
@@ -25,5 +25,3 @@ class EventSubscriber<EventData> {
     });
   }
 }
-
-export default EventSubscriber;

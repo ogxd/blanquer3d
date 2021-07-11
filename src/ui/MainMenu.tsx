@@ -1,19 +1,17 @@
 import React, { Component } from "react";
-import Switch from "./components/Switch";
-import Viewport from "../view/Viewport";
-import EventSubscriber from "../core/EventSubscriber";
 import { Ribbon, RibbonGroup, RibbonGroupItem, RibbonButton } from "react-bootstrap-ribbon";
+import * as Blanquer3d from "blanquer3d";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "react-bootstrap-ribbon/dist/react-bootstrap-ribbon.css";
 
-class MainMenu extends Component {
+export class MainMenu extends Component {
   constructor(props) {
     super(props);
     MainMenu._instance = this;
   }
 
-  readonly onViewModeChanged = new EventSubscriber<boolean>();
+  readonly onViewModeChanged = new Blanquer3d.EventSubscriber<boolean>();
 
   private _is3d: boolean;
 
@@ -26,7 +24,7 @@ class MainMenu extends Component {
       <div style={{ display: "flex" }}>
         <div style={{ marginRight: "auto" }}>🚀 Blanquer 3D</div>
         <div style={{ marginLeft: "auto", marginRight: "20px" }}>
-          <Switch
+          <Blanquer3d.Switch
             labelOff={"2D"}
             labelOn={"3D"}
             ref={(input) => {
@@ -152,7 +150,7 @@ class MainMenu extends Component {
               <RibbonGroupItem colClass="col-12">
                 <RibbonButton
                   onClick={(x) => {
-                    Viewport.getInstance().takeScreenshort();
+                    Blanquer3d.Viewport.getInstance().takeScreenshort();
                   }}
                 >
                   <svg
@@ -327,5 +325,3 @@ class MainMenu extends Component {
     return MainMenu._instance;
   }
 }
-
-export default MainMenu;

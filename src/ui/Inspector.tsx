@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
-import Scene from "../scene/Scene";
-import { drawProperty } from "../core/PropertyDrawer";
-import PropertyDrawers from "./PropertyDrawers";
-import MainMenu from "./MainMenu";
 import { ListItem } from "@material-ui/core";
+import * as Blanquer3d from "blanquer3d";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -19,13 +16,13 @@ const styles = (theme: Theme) =>
     },
   });
 
-class Inspector extends Component {
+class InspectorUnstyled extends Component {
   constructor(props) {
     super(props);
-    PropertyDrawers.initialize(); // Force static property drawers initialization
-    Scene.getInstance().onObjectAdded.subscribe(this, (object) => this.refresh());
-    Scene.getInstance().onObjectSelected.subscribe(this, (object) => this.refresh());
-    MainMenu.getInstance().onViewModeChanged.subscribe(this, (mode) => this.refresh());
+    Blanquer3d.PropertyDrawers.initialize(); // Force static property drawers initialization
+    Blanquer3d.Scene.getInstance().onObjectAdded.subscribe(this, (object) => this.refresh());
+    Blanquer3d.Scene.getInstance().onObjectSelected.subscribe(this, (object) => this.refresh());
+    Blanquer3d.MainMenu.getInstance().onViewModeChanged.subscribe(this, (mode) => this.refresh());
   }
 
   state = {
@@ -39,7 +36,7 @@ class Inspector extends Component {
   }
 
   getVisuals() {
-    const selectedObject: any = Scene.getInstance().getSelected();
+    const selectedObject: any = Blanquer3d.Scene.getInstance().getSelected();
 
     if (!selectedObject) {
       return <h2>Nothing Selected</h2>;
@@ -61,7 +58,11 @@ class Inspector extends Component {
 
       //console.log(`name:${propertyName} type:${propertyType}`);
 
-      elements.push(<ListItem key={key}>{drawProperty(selectedObject, propertyName, propertyType)}</ListItem>);
+      elements.push(
+        <ListItem key={key}>
+          {Blanquer3d.PropertyDrawersReg.drawProperty(selectedObject, propertyName, propertyType)}
+        </ListItem>
+      );
       key++;
     });
 
@@ -92,4 +93,4 @@ class Inspector extends Component {
   }
 }
 
-export default withStyles(styles)(Inspector);
+export const Inspector = withStyles(styles)(InspectorUnstyled);

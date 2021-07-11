@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "./src",
+    "rootDirs": ["src", "tests"],
     "lib": ["dom", "dom.iterable", "esnext"],
     "declaration": true,
     "allowJs": true,
@@ -8,7 +9,7 @@
     "esModuleInterop": true,
     "strict": false,
     "strictNullChecks": false,
-    "module": "esnext",
+    "module": "commonjs",
     "target": "es6",
     "moduleResolution": "node",
     "resolveJsonModule": true,

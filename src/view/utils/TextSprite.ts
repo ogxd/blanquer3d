@@ -1,7 +1,7 @@
 import { CancelSharp } from "@material-ui/icons";
 import * as Three from "three";
 
-interface ITextSpriteProps {
+export interface ITextSpriteProps {
   text: string;
   fontFace: string;
   bold: boolean;
@@ -13,7 +13,7 @@ interface ITextSpriteProps {
   alignment: Three.Vector2;
 }
 
-class TextSprite extends Three.Object3D {
+export class TextSprite extends Three.Object3D {
   constructor() {
     super();
 
@@ -120,5 +120,3 @@ class TextSprite extends Three.Object3D {
     ctx.stroke();
   }
 }
-
-export default TextSprite;

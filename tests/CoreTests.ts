@@ -1,10 +1,9 @@
 import { expect } from "chai";
-import EventSubscriber from "../src/core/EventSubscriber";
-import { property } from "../src/core/PropertyDecorator";
+import * as Blanquer3d from "../src/blanquer3d";
 
 describe("core", () => {
   it("EventSubscriber can subscribe, unsubscribe and dispatch events", () => {
-    var eventSubscriber = new EventSubscriber<number>();
+    var eventSubscriber = new Blanquer3d.EventSubscriber<number>();
     var k = 0;
 
     function onEvent(n: number) {
@@ -29,9 +28,9 @@ describe("core", () => {
 
   it("PropertyDecorator can handle property changes", () => {
     class MyObject {
-      @property
+      @Blanquer3d.property
       myProperty: string;
-      readonly onPropertyChanged = new EventSubscriber<string>();
+      readonly onPropertyChanged = new Blanquer3d.EventSubscriber<string>();
     }
 
     var myObject = new MyObject();
@@ -50,18 +49,18 @@ describe("core", () => {
 
   it("PropertyDecorator can handle nested property changes", () => {
     class MyNestedObject {
-      @property
+      @Blanquer3d.property
       myNestedProperty: string;
-      readonly onPropertyChanged = new EventSubscriber<string>();
+      readonly onPropertyChanged = new Blanquer3d.EventSubscriber<string>();
       toString() {
         return "nested" + this.myNestedProperty;
       }
     }
 
     class MyObject {
-      @property
+      @Blanquer3d.property
       myProperty: MyNestedObject;
-      readonly onPropertyChanged = new EventSubscriber<string>();
+      readonly onPropertyChanged = new Blanquer3d.EventSubscriber<string>();
     }
 
     var myObject = new MyObject();

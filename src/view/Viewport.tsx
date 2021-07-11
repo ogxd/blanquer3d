@@ -1,22 +1,11 @@
 import * as Three from "three";
-import Scene from "../scene/Scene";
-import OrbitControls from "./OrbitControls";
-// import { SpriteText2D, MeshText2D, textAlign } from "three-text2d";
-import SpriteText from "three-spritetext";
-
-import Point from "../scene/primitives/Point";
-import Visual from "./visuals/Visual";
-import PointVisual from "./visuals/PointVisual";
-import MainMenu from "../ui/MainMenu";
-import Segment from "src/scene/primitives/Segment";
-import SegmentVisual from "./visuals/SegmentVisual";
-import Grid from "src/view/utils/Grid";
+import * as Blanquer3d from "blanquer3d";
 
 export interface ViewportProps {}
 
 export interface ViewportState {}
 
-class Viewport {
+export class Viewport {
   private _renderer: Three.WebGLRenderer;
   private _camera: Three.PerspectiveCamera;
   private _threeScene: Three.Scene;
@@ -44,7 +33,7 @@ class Viewport {
     // var gridXZ = new Three.GridHelper(100, 10, "#ff0000", "#999999");
     // gridXZ.rotateX(Math.PI / 2);
     // this._threeScene.add(gridXZ);
-    this._threeScene.add(new Grid());
+    this._threeScene.add(new Blanquer3d.Grid());
 
     // Render Loop
     this.render3d();
@@ -62,30 +51,37 @@ class Viewport {
 
     this._resize();
 
-    this._controls = new OrbitControls(this._camera, this._renderer.domElement);
+    this._controls = new Blanquer3d.OrbitControls(this._camera, this._renderer.domElement);
 
     // Light
     var ambientLight = new Three.AmbientLight(0xffffff);
     this._threeScene.add(ambientLight);
 
     this.setViewMode(false);
-    MainMenu.getInstance().onViewModeChanged.subscribe(this, this.setViewMode);
+    Blanquer3d.MainMenu.getInstance().onViewModeChanged.subscribe(this, this.setViewMode);
 
-    Scene.getInstance().onObjectAdded.subscribe(this, (sceneObject) => {
+    Blanquer3d.Scene.getInstance().onObjectAdded.subscribe(this, (sceneObject) => {
+      let visual: Blanquer3d.VisualBase;
       switch (sceneObject.constructor) {
-        case Point:
-          var pv = new PointVisual(sceneObject as Point, this._threeScene);
-          pv.onCreate();
+        case Blanquer3d.Point:
+          visual = new Blanquer3d.PointVisual(sceneObject as Blanquer3d.Point);
           break;
-        case Segment:
-          var sv = new SegmentVisual(sceneObject as Segment, this._threeScene);
-          sv.onCreate();
+        case Blanquer3d.Segment:
+          visual = new Blanquer3d.SegmentVisual(sceneObject as Blanquer3d.Segment);
           break;
+        default:
+          return;
       }
+      visual.onCreate();
+      this._threeScene.add(visual);
+      sceneObject.onDestroy.subscribe(this, () => {
+        this._threeScene.remove(visual);
+        visual.onDestroy();
+      });
     });
   }
 
-  private _controls: OrbitControls;
+  private _controls: Blanquer3d.OrbitControls;
 
   unmount() {
     window.removeEventListener("resize", this._resize);
@@ -112,7 +108,7 @@ class Viewport {
       this._camera.position.y = 0;
       this._camera.position.z = 100;
       this._camera.setRotationFromAxisAngle(new Three.Vector3(0, 0, 0), 0);
-      console.log(this._camera.rotation);
+      //console.log(this._camera.rotation);
       //this._camera.lookAt(new Three.Vector3(0, 0, 0));
       this._controls.enableRotate = false;
     }
@@ -134,5 +130,3 @@ class Viewport {
     return Viewport._instance;
   }
 }
-
-export default Viewport;
