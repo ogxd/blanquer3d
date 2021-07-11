@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import { ListItem } from "@material-ui/core";
-import * as Blanquer3d from "src/blanquer3d";
+import * as Blanquer3d from "blanquer3d";
 
 const styles = (theme: Theme) =>
   createStyles({

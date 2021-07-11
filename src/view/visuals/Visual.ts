@@ -1,4 +1,4 @@
-import * as Blanquer3d from "src/blanquer3d";
+import * as Blanquer3d from "blanquer3d";
 import * as Three from "three";
 
 export class VisualBase extends Three.Group {

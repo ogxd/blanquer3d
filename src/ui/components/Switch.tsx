@@ -4,7 +4,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 import MaterialSwitch, { SwitchClassKey, SwitchProps } from "@material-ui/core/Switch";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import * as Blanquer3d from "src/blanquer3d";
+import * as Blanquer3d from "blanquer3d";
 
 interface Styles extends Partial<Record<SwitchClassKey, string>> {
   focusVisible?: string;

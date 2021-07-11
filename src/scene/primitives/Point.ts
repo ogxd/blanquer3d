@@ -1,4 +1,4 @@
-import * as Blanquer3d from "src/blanquer3d";
+import * as Blanquer3d from "blanquer3d";
 
 export class Point extends Blanquer3d.SceneObject {
   @Blanquer3d.property

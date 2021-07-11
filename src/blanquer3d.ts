@@ -2,30 +2,30 @@
 // Also, this is not circular reference friendly :-)
 
 // Before everything else, core and maths objects and
-export * from "src/core/PropertyDecorator";
-export * from "src/core/PropertyDrawer";
-export * from "src/core/EventSubscriber";
-export * from "src/core/Utils";
+export * from "./core/PropertyDecorator";
+export * from "./core/PropertyDrawer";
+export * from "./core/EventSubscriber";
+export * from "./core/Utils";
 
-export * from "src/maths/Vector3";
+export * from "./maths/Vector3";
 
 // Then, scene objects
-export * from "src/scene/Scene";
-export * from "src/scene/SceneObject";
-export * from "src/scene/primitives/Point";
-export * from "src/scene/primitives/Segment";
+export * from "./scene/Scene";
+export * from "./scene/SceneObject";
+export * from "./scene/primitives/Point";
+export * from "./scene/primitives/Segment";
 
 // Then UI and 3D layers
-export * from "src/view/visuals/Visual";
-export * from "src/view/visuals/PointVisual";
-export * from "src/view/visuals/SegmentVisual";
-export * from "src/view/OrbitControls";
-export * from "src/view/Viewport";
-export * from "src/view/utils/Grid";
-export * from "src/view/utils/TextSprite";
+export * from "./view/visuals/Visual";
+export * from "./view/visuals/PointVisual";
+export * from "./view/visuals/SegmentVisual";
+export * from "./view/OrbitControls";
+export * from "./view/Viewport";
+export * from "./view/utils/Grid";
+export * from "./view/utils/TextSprite";
 
-export * from "src/ui/Hierarchy";
-export * from "src/ui/Inspector";
-export * from "src/ui/MainMenu";
-export * from "src/ui/PropertyDrawers";
-export * from "src/ui/components/Switch";
+export * from "./ui/Hierarchy";
+export * from "./ui/Inspector";
+export * from "./ui/MainMenu";
+export * from "./ui/PropertyDrawers";
+export * from "./ui/components/Switch";

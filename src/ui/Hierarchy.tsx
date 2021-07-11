@@ -7,7 +7,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import * as Blanquer3d from "src/blanquer3d";
+import * as Blanquer3d from "blanquer3d";
 
 const styles = (theme: Theme) =>
   createStyles({

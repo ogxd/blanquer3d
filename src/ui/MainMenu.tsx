@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Ribbon, RibbonGroup, RibbonGroupItem, RibbonButton } from "react-bootstrap-ribbon";
-import * as Blanquer3d from "src/blanquer3d";
+import * as Blanquer3d from "blanquer3d";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "react-bootstrap-ribbon/dist/react-bootstrap-ribbon.css";

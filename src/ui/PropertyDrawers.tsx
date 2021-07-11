@@ -1,6 +1,6 @@
 import React from "react";
 import * as MaterialUI from "@material-ui/core";
-import * as Blanquer3d from "src/blanquer3d";
+import * as Blanquer3d from "blanquer3d";
 
 export class PropertyDrawers {
   static initialize() {

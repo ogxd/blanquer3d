@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import * as Blanquer3d from "src/blanquer3d";
+import * as Blanquer3d from "blanquer3d";
 import "reflect-metadata";
 
 ReactDOM.render(<Blanquer3d.Hierarchy />, document.getElementById("hierarchy"));
