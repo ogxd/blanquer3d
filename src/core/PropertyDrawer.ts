@@ -3,7 +3,14 @@ import "reflect-metadata";
 let propertyDrawers = new Map<any, Function>();
 
 export function drawProperty(object: any, propName: string, propType: string): any {
-  return propertyDrawers[propType](object, propName);
+  console.log("draw property");
+  console.log(object);
+  console.log(propName);
+  console.log(propType);
+  const propertyDrawer = propertyDrawers[propType];
+  if (propertyDrawer) {
+    return propertyDrawer(object, propName);
+  }
 }
 
 export function propertyDrawer(type: any) {

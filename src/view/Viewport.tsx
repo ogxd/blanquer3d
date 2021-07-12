@@ -11,6 +11,7 @@ import { SegmentVisual } from "./visuals/SegmentVisual";
 import Grid from "src/view/utils/Grid";
 import PickHelper from "./utils/PickHelper";
 import SceneObject from "src/scene/SceneObject";
+import PointOnLine from "src/scene/primitives/PointOnLine";
 
 export interface ViewportProps {}
 
@@ -69,7 +70,9 @@ class Viewport {
 
     Scene.getInstance().onObjectAdded.subscribe(this, (sceneObject) => {
       let visual: Visual<SceneObject>;
+      console.log(sceneObject.constructor);
       switch (sceneObject.constructor) {
+        case PointOnLine:
         case Point:
           visual = new PointVisual(sceneObject as Point);
           break;
@@ -96,7 +99,9 @@ class Viewport {
 
       const selected = this._pickHelper.pick(x, y, this._threeScene, this._camera);
 
-      Scene.getInstance().setSelected(selected?.getObject());
+      if (selected) {
+        Scene.getInstance().setSelected(selected.getObject());
+      }
     });
 
     let group = new Three.Group();

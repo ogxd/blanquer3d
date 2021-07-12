@@ -13,6 +13,10 @@ class Point extends SceneObject {
     this.position = new Vector3(0, 0, 0);
     this.name = "New Point";
   }
+
+  getPosition() {
+    return this.position;
+  }
 }
 
 export default Point;

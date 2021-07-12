@@ -3,6 +3,7 @@ import React from "react";
 import { propertyDrawer } from "../core/PropertyDrawer";
 import Vector3 from "../maths/Vector3";
 import Point from "../scene/primitives/Point";
+import Segment from "../scene/primitives/Segment";
 import MainMenu from "./MainMenu";
 import Scene from "src/scene/Scene";
 import { Select } from "@material-ui/core";
@@ -107,7 +108,51 @@ class PropertyDrawers {
       indexToObj[key] = x;
       key++;
     });
-    console.log("current: " + current);
+    return (
+      <React.Fragment>
+        <Select
+          key={current}
+          defaultValue={current}
+          onChange={(event) => {
+            let index = +event.target.value;
+            object[propName] = index === -1 ? undefined : indexToObj[index];
+          }}
+          displayEmpty
+          inputProps={{
+            "aria-label": "Without label",
+          }}
+          startAdornment={<InputAdornment position="start">{propName}</InputAdornment>}
+        >
+          {elements}
+        </Select>
+      </React.Fragment>
+    );
+  }
+
+  @propertyDrawer(Segment)
+  static drawSegment(object: any, propName: string) {
+    const elements = [];
+    let key = 0;
+    let current = -1;
+    const currentObject = object[propName];
+    const indexToObj = new Map<number, any>();
+    elements.push(
+      <MenuItem key={-1} value={-1}>
+        None
+      </MenuItem>
+    );
+    Scene.getInstance().forEach((x) => {
+      if (currentObject === x) {
+        current = key;
+      }
+      elements.push(
+        <MenuItem key={key} value={key}>
+          {x["name"]}
+        </MenuItem>
+      );
+      indexToObj[key] = x;
+      key++;
+    });
     return (
       <React.Fragment>
         <Select
@@ -131,6 +176,25 @@ class PropertyDrawers {
 
   @propertyDrawer(String)
   static drawString(object: any, propName: string) {
+    return (
+      <TextField
+        key={object[propName]}
+        InputLabelProps={{
+          shrink: true,
+        }}
+        InputProps={{
+          startAdornment: <InputAdornment position="start">{propName}</InputAdornment>,
+        }}
+        defaultValue={object[propName]}
+        onChange={(event) => {
+          object[propName] = event.target.value;
+        }}
+      />
+    );
+  }
+
+  //@propertyDrawer(Enum)
+  static drawString2(object: any, propName: string) {
     return (
       <TextField
         key={object[propName]}

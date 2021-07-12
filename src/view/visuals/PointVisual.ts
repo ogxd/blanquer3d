@@ -9,6 +9,7 @@ export class PointVisual extends Visual<Point> {
   private _material: Three.MeshBasicMaterial;
 
   onCreate() {
+    console.log("CACA PROUT");
     const geometry = new Three.SphereGeometry(0.5, 32, 32);
     this._material = new Three.MeshBasicMaterial({ color: 0xff0000 });
     this._sphere = new Three.Mesh(geometry, this._material);
@@ -40,8 +41,10 @@ export class PointVisual extends Visual<Point> {
         this._textSprite.update();
         break;
       }
+      case "point":
+      case "segment":
       case "position": {
-        var pos = this._object.position;
+        var pos = this._object.getPosition();
         this.position.set(pos.x, pos.y, pos.z);
         break;
       }

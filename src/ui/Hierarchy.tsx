@@ -11,6 +11,7 @@ import Scene from "../scene/Scene";
 import SceneObject from "../scene/SceneObject";
 import Point from "../scene/primitives/Point";
 import Segment from "../scene/primitives/Segment";
+import PointOnLine from "src/scene/primitives/PointOnLine";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -103,6 +104,14 @@ class Hierarchy extends Component {
               }}
             >
               Point
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                Scene.getInstance().addObject(new PointOnLine());
+                handleClose();
+              }}
+            >
+              Point on Line
             </MenuItem>
             <MenuItem
               onClick={() => {
