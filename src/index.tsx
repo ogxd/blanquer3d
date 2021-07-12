@@ -10,7 +10,7 @@ ReactDOM.render(<Hierarchy />, document.getElementById("hierarchy"));
 ReactDOM.render(<MainMenu />, document.getElementById("mainmenu"));
 ReactDOM.render(<Inspector />, document.getElementById("inspector"));
 
-var viewport = new Viewport(document.getElementById("viewport"));
+var viewport = new Viewport(document.getElementById("viewport") as HTMLCanvasElement);
 
 // Eventualy later we can use URL for scene serialization
 // const queryString = window.location.search;

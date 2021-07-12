@@ -131,7 +131,6 @@ class PropertyDrawers {
 
   @propertyDrawer(String)
   static drawString(object: any, propName: string) {
-    console.log("draw string !");
     return (
       <TextField
         key={object[propName]}

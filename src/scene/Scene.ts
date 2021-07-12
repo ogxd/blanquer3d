@@ -18,7 +18,9 @@ class Scene implements IScene {
 
   setSelected(selected: SceneObject) {
     if (this._selected !== selected) {
+      this._selected?.onSelected.dispatch(false);
       this._selected = selected;
+      this._selected?.onSelected.dispatch(true);
       this.onObjectSelected.dispatch(selected);
     }
   }

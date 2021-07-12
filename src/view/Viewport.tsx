@@ -1,16 +1,16 @@
 import * as Three from "three";
 import Scene from "../scene/Scene";
 import OrbitControls from "./OrbitControls";
-// import { SpriteText2D, MeshText2D, textAlign } from "three-text2d";
-import SpriteText from "three-spritetext";
 
 import Point from "../scene/primitives/Point";
-import Visual from "./visuals/Visual";
-import PointVisual from "./visuals/PointVisual";
+import { Visual } from "./visuals/Visual";
+import { PointVisual } from "./visuals/PointVisual";
 import MainMenu from "../ui/MainMenu";
 import Segment from "src/scene/primitives/Segment";
-import SegmentVisual from "./visuals/SegmentVisual";
+import { SegmentVisual } from "./visuals/SegmentVisual";
 import Grid from "src/view/utils/Grid";
+import PickHelper from "./utils/PickHelper";
+import SceneObject from "src/scene/SceneObject";
 
 export interface ViewportProps {}
 
@@ -21,10 +21,15 @@ class Viewport {
   private _camera: Three.PerspectiveCamera;
   private _threeScene: Three.Scene;
   private _resize: any;
-  private _element: HTMLElement;
+  private _element: HTMLCanvasElement;
+  private _pickHelper: PickHelper;
+  private _selectedVisual: Visual<SceneObject>;
+  private _controls: OrbitControls;
 
-  constructor(element: HTMLElement) {
+  constructor(element: HTMLCanvasElement) {
     Viewport._instance = this;
+
+    this._pickHelper = new PickHelper();
 
     this._element = element;
 
@@ -36,20 +41,11 @@ class Viewport {
     this._camera.up.set(0, 0, 1);
 
     // Create a renderer
-    this._renderer = new Three.WebGLRenderer({ antialias: true });
+    this._renderer = new Three.WebGLRenderer({ canvas: element, antialias: true });
     this._renderer.setClearColor("#ffffff");
-    element.appendChild(this._renderer.domElement);
 
     // Grid
-    // var gridXZ = new Three.GridHelper(100, 10, "#ff0000", "#999999");
-    // gridXZ.rotateX(Math.PI / 2);
-    // this._threeScene.add(gridXZ);
     this._threeScene.add(new Grid());
-
-    // Render Loop
-    this.render3d();
-
-    //Scene.getInstance().onObjectAdded.subscribe(() => {}, this);
 
     window.addEventListener(
       "resize",
@@ -72,33 +68,65 @@ class Viewport {
     MainMenu.getInstance().onViewModeChanged.subscribe(this, this.setViewMode);
 
     Scene.getInstance().onObjectAdded.subscribe(this, (sceneObject) => {
+      let visual: Visual<SceneObject>;
       switch (sceneObject.constructor) {
         case Point:
-          var pv = new PointVisual(sceneObject as Point, this._threeScene);
-          pv.onCreate();
+          visual = new PointVisual(sceneObject as Point);
           break;
         case Segment:
-          var sv = new SegmentVisual(sceneObject as Segment, this._threeScene);
-          sv.onCreate();
+          visual = new SegmentVisual(sceneObject as Segment);
           break;
+        default:
+          return;
       }
+
+      visual.onCreate();
+      this._threeScene.add(visual);
+      sceneObject.onDestroy.subscribe(this, () => {
+        this._threeScene.remove(visual);
+        visual.onDestroy();
+      });
     });
+
+    //window.addEventListener("mousemove", (x) => this.setPickPosition(x));
+    window.addEventListener("mousedown", (event) => {
+      const pos = this.getCanvasRelativePosition(event);
+      const x: number = (pos.x / this._element.width) * 2 - 1;
+      const y: number = (pos.y / this._element.height) * -2 + 1; // note we flip Y
+
+      const selected = this._pickHelper.pick(x, y, this._threeScene, this._camera);
+
+      Scene.getInstance().setSelected(selected?.getObject());
+    });
+
+    let group = new Three.Group();
+    this._threeScene.add(group);
+
+    this.render3d(0);
   }
 
-  private _controls: OrbitControls;
+  getCanvasRelativePosition(event) {
+    const rect = this._element.getBoundingClientRect();
+    return {
+      x: ((event.clientX - rect.left) * this._element.width) / rect.width,
+      y: ((event.clientY - rect.top) * this._element.height) / rect.height,
+    };
+  }
 
   unmount() {
     window.removeEventListener("resize", this._resize);
   }
 
-  render3d() {
-    requestAnimationFrame(() => this.render3d());
-
+  render3d(time) {
     // for (const visual of this._visuals) {
     //   visual.onRender();
     // }
 
+    time *= 0.001; // convert to seconds;
+
     this._renderer.render(this._threeScene, this._camera);
+
+    requestAnimationFrame(this.render3d.bind(this));
   }
 
   setViewMode(mode3D: boolean) {

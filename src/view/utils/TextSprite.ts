@@ -35,7 +35,11 @@ class TextSprite extends Three.Object3D {
     sprite.scale.set(0.2, 0.1, 1.0);
     sprite.center.set(-0.04, 0.65);
 
-    this.add(sprite);
+    let group = new Three.Group();
+    group.add(sprite);
+
+    //this.add(sprite);
+    this.add(group);
 
     this.update();
   }

@@ -1,9 +1,9 @@
 import Segment from "../../scene/primitives/Segment";
-import Visual from "src/view/visuals/Visual";
+import { Visual } from "src/view/visuals/Visual";
 import * as Three from "three";
 import { MeshLine, MeshLineMaterial } from "three.meshline";
 
-class SegmentVisual extends Visual<Segment> {
+export class SegmentVisual extends Visual<Segment> {
   private _line: MeshLine;
   private _mesh: Three.Mesh;
   private _material: MeshLineMaterial;
@@ -16,11 +16,11 @@ class SegmentVisual extends Visual<Segment> {
     this._material.lineWidth = 0.002;
     this._mesh = new Three.Mesh(this._line, this._material);
 
-    this._scene.add(this._mesh);
+    this.add(this._mesh);
   }
 
   onDestroy() {
-    this._scene.remove(this._mesh);
+    //this._scene.remove(this._mesh);
   }
 
   onRender() {
@@ -45,6 +45,8 @@ class SegmentVisual extends Visual<Segment> {
       }
     }
   }
-}
 
-export default SegmentVisual;
+  onSelected(selected: boolean) {
+    this._material.color = new Three.Color(selected ? 1 : 0, 0, 0);
+  }
+}

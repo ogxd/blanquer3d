@@ -1,4 +1,4 @@
-import { arrayRemove } from "../core/Utils";
+import { arrayRemove } from "./Utils";
 
 type Predicate<T> = (item: T) => void;
 
