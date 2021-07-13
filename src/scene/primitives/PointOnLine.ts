@@ -1,10 +1,9 @@
-import SceneObject from "../SceneObject";
-import { property } from "../../core/PropertyDecorator";
-import Segment from "./Segment";
 import Vector3 from "../../maths/Vector3";
-import Point from "./Point";
+import { property } from "../../core/PropertyDecorator";
+import { Segment } from "./Segment";
+import { Point } from "./Point";
 
-class PointOnLine extends Point {
+export class PointOnLine extends Point {
   @property
   name: string;
 
@@ -18,16 +17,13 @@ class PointOnLine extends Point {
     if (!this.point || !this.segment) {
       return Vector3.ZERO;
     }
-    return Vector3.FindNearestPointOnLine(
-      this.segment.point1.position,
-      Vector3.Substract(this.segment.point2.position, this.segment.point1.position),
-      this.point.position
-    );
+    const pos1 = this.segment.point1.getPosition();
+    const pos2 = this.segment.point2.getPosition();
+    const dir = Vector3.Substract(pos2, pos1);
+    return Vector3.FindNearestPointOnLine(pos1, dir, this.point.getPosition());
   }
 
   initialize() {
-    this.name = "New Point on Line";
+    this.name = Point.getDefaultName();
   }
 }
-
-export default PointOnLine;

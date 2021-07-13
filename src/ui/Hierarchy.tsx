@@ -9,9 +9,9 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Scene from "../scene/Scene";
 import SceneObject from "../scene/SceneObject";
-import Point from "../scene/primitives/Point";
-import Segment from "../scene/primitives/Segment";
-import PointOnLine from "src/scene/primitives/PointOnLine";
+import { PointOnLine } from "../scene/primitives/PointOnLine";
+import { PointFromPosition } from "../scene/primitives/PointFromPosition";
+import { Segment } from "../scene/primitives/Segment";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -99,7 +99,7 @@ class Hierarchy extends Component {
           >
             <MenuItem
               onClick={() => {
-                Scene.getInstance().addObject(new Point());
+                Scene.getInstance().addObject(new PointFromPosition());
                 handleClose();
               }}
             >

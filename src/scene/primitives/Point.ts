@@ -1,22 +1,13 @@
+import { property } from "src/core/PropertyDecorator";
 import SceneObject from "../SceneObject";
-import Vector3 from "../../maths/Vector3";
-import { property } from "../../core/PropertyDecorator";
 
-class Point extends SceneObject {
-  @property
-  name: string;
+export abstract class Point extends SceneObject {
+  abstract getPosition();
 
-  @property
-  position: Vector3;
+  private static readonly namesString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  private static namesStringIndex = 0;
 
-  initialize() {
-    this.position = new Vector3(0, 0, 0);
-    this.name = "New Point";
-  }
-
-  getPosition() {
-    return this.position;
+  protected static getDefaultName(): string {
+    return this.namesString.charAt(this.namesStringIndex++);
   }
 }
-
-export default Point;

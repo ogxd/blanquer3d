@@ -1,8 +1,8 @@
 import SceneObject from "../SceneObject";
-import Point from "./Point";
+import { Point } from "./Point";
 import { property } from "../../core/PropertyDecorator";
 
-class Segment extends SceneObject {
+export class Segment extends SceneObject {
   @property
   name: string;
 
@@ -16,5 +16,3 @@ class Segment extends SceneObject {
     this.name = "New Segment";
   }
 }
-
-export default Segment;

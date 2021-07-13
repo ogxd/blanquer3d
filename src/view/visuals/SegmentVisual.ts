@@ -1,7 +1,7 @@
-import Segment from "../../scene/primitives/Segment";
+import { Segment } from "../../scene/primitives/Segment";
 import { Visual } from "src/view/visuals/Visual";
 import * as Three from "three";
-import { MeshLine, MeshLineMaterial } from "three.meshline";
+import { MeshLine, MeshLineMaterial, MeshLineRaycast } from "three.meshline";
 
 export class SegmentVisual extends Visual<Segment> {
   private _line: MeshLine;
@@ -13,8 +13,9 @@ export class SegmentVisual extends Visual<Segment> {
     this._material = new MeshLineMaterial();
     this._material.color = new Three.Color(0, 0, 0);
     this._material.sizeAttenuation = 0;
-    this._material.lineWidth = 0.002;
+    this._material.lineWidth = 0.004;
     this._mesh = new Three.Mesh(this._line, this._material);
+    this._mesh.raycast = MeshLineRaycast;
 
     this.add(this._mesh);
   }
@@ -33,8 +34,8 @@ export class SegmentVisual extends Visual<Segment> {
 
   onPropertyChanged(name: string) {
     if (name === "point1" || name === "point2") {
-      var pos1 = this._object.point1?.position;
-      var pos2 = this._object.point2?.position;
+      var pos1 = this._object.point1?.getPosition();
+      var pos2 = this._object.point2?.getPosition();
 
       if (pos1 && pos2) {
         const points = [];

@@ -1,4 +1,4 @@
-import Point from "../../scene/primitives/Point";
+import { Point } from "../../scene/primitives/Point";
 import TextSprite from "src/view/utils/TextSprite";
 import { Visual } from "./Visual";
 import * as Three from "three";
@@ -9,7 +9,6 @@ export class PointVisual extends Visual<Point> {
   private _material: Three.MeshBasicMaterial;
 
   onCreate() {
-    console.log("CACA PROUT");
     const geometry = new Three.SphereGeometry(0.5, 32, 32);
     this._material = new Three.MeshBasicMaterial({ color: 0xff0000 });
     this._sphere = new Three.Mesh(geometry, this._material);

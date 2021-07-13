@@ -2,16 +2,17 @@ import * as Three from "three";
 import Scene from "../scene/Scene";
 import OrbitControls from "./OrbitControls";
 
-import Point from "../scene/primitives/Point";
+import { Point } from "../scene/primitives/Point";
+import { PointOnLine } from "../scene/primitives/PointOnLine";
+import { PointFromPosition } from "../scene/primitives/PointFromPosition";
 import { Visual } from "./visuals/Visual";
 import { PointVisual } from "./visuals/PointVisual";
 import MainMenu from "../ui/MainMenu";
-import Segment from "src/scene/primitives/Segment";
+import { Segment } from "src/scene/primitives/Segment";
 import { SegmentVisual } from "./visuals/SegmentVisual";
 import Grid from "src/view/utils/Grid";
 import PickHelper from "./utils/PickHelper";
 import SceneObject from "src/scene/SceneObject";
-import PointOnLine from "src/scene/primitives/PointOnLine";
 
 export interface ViewportProps {}
 
@@ -24,7 +25,6 @@ class Viewport {
   private _resize: any;
   private _element: HTMLCanvasElement;
   private _pickHelper: PickHelper;
-  private _selectedVisual: Visual<SceneObject>;
   private _controls: OrbitControls;
 
   constructor(element: HTMLCanvasElement) {
@@ -73,7 +73,7 @@ class Viewport {
       console.log(sceneObject.constructor);
       switch (sceneObject.constructor) {
         case PointOnLine:
-        case Point:
+        case PointFromPosition:
           visual = new PointVisual(sceneObject as Point);
           break;
         case Segment:

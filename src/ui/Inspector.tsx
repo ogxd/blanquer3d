@@ -55,6 +55,7 @@ class Inspector extends Component {
     //   console.log(x);
     // });
 
+    //todo: per object type property drawer OR getProperties trick
     properties.forEach((property) => {
       const propertyName = property.name;
       const propertyType = property.type;
