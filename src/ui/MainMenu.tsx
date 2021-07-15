@@ -6,6 +6,7 @@ import { Ribbon, RibbonGroup, RibbonGroupItem, RibbonButton } from "react-bootst
 
 import "bootstrap/dist/css/bootstrap.css";
 import "react-bootstrap-ribbon/dist/react-bootstrap-ribbon.css";
+import Scene from "src/scene/Scene";
 
 class MainMenu extends Component {
   constructor(props) {
@@ -44,9 +45,13 @@ class MainMenu extends Component {
   render() {
     return (
       <Ribbon breakpoint="lg">
-        <RibbonGroup title="Clipboard" colClass="col-3">
+        <RibbonGroup title="Scene" colClass="col-3">
           <RibbonGroupItem colClass="col-4">
-            <RibbonButton>
+            <RibbonButton
+              onClick={(x) => {
+                console.log(window.location + "?save=" + Scene.getInstance().save());
+              }}
+            >
               <svg
                 className="bi bi-pencil"
                 width="1em"
@@ -66,7 +71,7 @@ class MainMenu extends Component {
                   clipRule="evenodd"
                 />
               </svg>
-              <div>Placeholder</div>
+              <div>JSON</div>
             </RibbonButton>
           </RibbonGroupItem>
 

@@ -1,6 +1,7 @@
-import { property } from "src/core/PropertyDecorator";
+import { Serializable, JsonProperty } from "typescript-json-serializer";
 import SceneObject from "../SceneObject";
 
+@Serializable()
 export abstract class Point extends SceneObject {
   abstract getPosition();
 

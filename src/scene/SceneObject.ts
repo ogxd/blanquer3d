@@ -1,28 +1,29 @@
+import { Serializable, JsonProperty } from "typescript-json-serializer";
 import EventSubscriber from "src/core/EventSubscriber";
 import { property } from "src/core/PropertyDecorator";
+import { ISerializable } from "src/core/Serialization";
 
-abstract class SceneObject {
-  private _isVisible: boolean = true;
+@Serializable()
+abstract class SceneObject implements ISerializable {
+  serialize(object: any) {
+    object["visibility"] = this.visibility;
+    object["name"] = this.visibility;
+  }
 
-  readonly onVisibilityChanged = new EventSubscriber<boolean>();
-  readonly onPropertyChanged = new EventSubscriber<string>();
-  readonly onSelected = new EventSubscriber<boolean>();
-  readonly onDestroy = new EventSubscriber<void>();
+  deserialize(object: any) {
+    this.visibility = object["visibility"];
+    this.name = object["name"];
+  }
+
+  @property
+  visibility: boolean = true;
 
   @property
   name: string;
 
-  setVisibility(visibility: boolean) {
-    var currentVisibility = this._isVisible;
-    this._isVisible = visibility;
-    if (currentVisibility !== visibility) {
-      this.onVisibilityChanged.dispatch(this._isVisible);
-    }
-  }
-
-  getVisibility(): boolean {
-    return this._isVisible;
-  }
+  readonly onPropertyChanged = new EventSubscriber<string>();
+  readonly onSelected = new EventSubscriber<boolean>();
+  readonly onDestroy = new EventSubscriber<void>();
 
   abstract initialize();
 }

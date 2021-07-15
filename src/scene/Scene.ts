@@ -1,10 +1,31 @@
+import { createInstance } from "src/core/Serialization";
 import EventSubscriber from "../core/EventSubscriber";
 import { arrayRemove } from "../core/Utils";
 import SceneObject from "../scene/SceneObject";
 
-interface IScene {}
+class Scene {
+  save(): string {
+    const objects = [];
+    this._objects.forEach((element) => {
+      const child = new Object();
+      objects.push(child);
+      element.serialize(child);
+    });
+    const json = JSON.stringify(objects);
+    return window.btoa(json).replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
+  }
 
-class Scene implements IScene {
+  load(base64: string) {
+    const json: string = window.atob(base64.replaceAll("-", "+").replaceAll("_", "/"));
+    const objects = JSON.parse(json);
+    this._objects.length = 0;
+    objects.forEach((element) => {
+      const child = createInstance(element["type"]);
+      child.deserialize(element);
+      this.addObject(child);
+    });
+  }
+
   private readonly _objects: SceneObject[] = [];
   readonly onObjectAdded = new EventSubscriber<SceneObject>();
   readonly onObjectRemoved = new EventSubscriber<SceneObject>();

@@ -10,7 +10,6 @@ export abstract class Visual<T extends SceneObject> extends Three.Group {
     this._object = object;
 
     this._object.onPropertyChanged.subscribe(this, this.onPropertyChanged);
-    this._object.onVisibilityChanged.subscribe(this, this.onVisibilityChanged);
     this._object.onDestroy.subscribe(this, this.onDestroy);
     this._object.onSelected.subscribe(this, this.onSelected);
   }
@@ -20,8 +19,6 @@ export abstract class Visual<T extends SceneObject> extends Three.Group {
   }
 
   abstract onPropertyChanged(name: string);
-
-  abstract onVisibilityChanged(isVisible: boolean);
 
   abstract onRender();
 

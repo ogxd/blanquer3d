@@ -4,6 +4,19 @@ import { Segment } from "./Segment";
 import { Point } from "./Point";
 
 export class PointOnLine extends Point {
+  serialize(object: any) {
+    object["type"] = "PointOnLine";
+    object["refs"] = {
+      point: this.point?.name,
+      segment: this.segment?.name,
+    };
+    super.serialize(object);
+  }
+
+  deserialize(object: any) {
+    super.deserialize(object);
+  }
+
   @property
   name: string;
 

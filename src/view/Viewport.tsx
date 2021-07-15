@@ -70,7 +70,7 @@ class Viewport {
 
     Scene.getInstance().onObjectAdded.subscribe(this, (sceneObject) => {
       let visual: Visual<SceneObject>;
-      console.log(sceneObject.constructor);
+      //console.log(sceneObject.constructor);
       switch (sceneObject.constructor) {
         case PointOnLine:
         case PointFromPosition:

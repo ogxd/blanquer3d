@@ -1,13 +1,27 @@
-class Vector3 {
+import { ISerializable } from "src/core/Serialization";
+
+class Vector3 implements ISerializable {
   constructor(x: number, y: number, z: number) {
     this.x = x;
     this.y = y;
     this.z = z;
   }
 
-  readonly x: number;
-  readonly y: number;
-  readonly z: number;
+  serialize(object: any) {
+    object["x"] = this.x;
+    object["y"] = this.y;
+    object["z"] = this.z;
+  }
+
+  deserialize(object: any) {
+    this.x = object["x"];
+    this.y = object["y"];
+    this.z = object["z"];
+  }
+
+  x: number;
+  y: number;
+  z: number;
 
   length(): number {
     return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
