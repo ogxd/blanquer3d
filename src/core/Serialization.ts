@@ -7,13 +7,4 @@ export interface ISerializable {
   deserialize(object: any);
 }
 
-export function createInstance(type: string): any {
-  switch (type) {
-    case "Scene":
-      return new Scene();
-    case "PointFromPosition":
-      return new PointFromPosition();
-    case "PointOnLine":
-      return new PointOnLine();
-  }
-}
+

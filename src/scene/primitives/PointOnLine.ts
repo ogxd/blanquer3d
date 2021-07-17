@@ -2,29 +2,19 @@ import Vector3 from "../../maths/Vector3";
 import { property } from "../../core/PropertyDecorator";
 import { Segment } from "./Segment";
 import { Point } from "./Point";
+import { reflectable } from "src/core/Reflection";
 
+@reflectable
 export class PointOnLine extends Point {
-  serialize(object: any) {
-    object["type"] = "PointOnLine";
-    object["refs"] = {
-      point: this.point?.name,
-      segment: this.segment?.name,
-    };
-    super.serialize(object);
-  }
-
-  deserialize(object: any) {
-    super.deserialize(object);
-  }
-
-  @property
-  name: string;
-
   @property
   point: Point;
 
   @property
   segment: Segment;
+
+  initialize() {
+    this.name = Point.getDefaultName();
+  }
 
   getPosition() {
     if (!this.point || !this.segment) {
@@ -36,7 +26,16 @@ export class PointOnLine extends Point {
     return Vector3.FindNearestPointOnLine(pos1, dir, this.point.getPosition());
   }
 
-  initialize() {
-    this.name = Point.getDefaultName();
+  serialize(object: any) {
+    object["type"] = "PointOnLine";
+    object["refs"] = {
+      point: this.point?.name,
+      segment: this.segment?.name,
+    };
+    super.serialize(object);
+  }
+
+  deserialize(object: any) {
+    super.deserialize(object);
   }
 }

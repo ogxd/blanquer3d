@@ -15,9 +15,10 @@ export class PointVisual extends Visual<Point> {
     this.add(this._sphere);
 
     this._textSprite = new TextSprite();
-    this._textSprite.parameters.text = this._object.name;
-    this._textSprite.update();
     this.add(this._textSprite);
+
+    this.updateLabel();
+    this.updatePosition();
   }
 
   onDestroy() {
@@ -36,18 +37,26 @@ export class PointVisual extends Visual<Point> {
   onPropertyChanged(name: string) {
     switch (name) {
       case "name": {
-        this._textSprite.parameters.text = this._object.name;
-        this._textSprite.update();
+        this.updateLabel();
         break;
       }
       case "point":
       case "segment":
       case "position": {
-        var pos = this._object.getPosition();
-        this.position.set(pos.x, pos.y, pos.z);
+        this.updatePosition();
         break;
       }
     }
+  }
+
+  private updateLabel() {
+    this._textSprite.parameters.text = this._object.name;
+    this._textSprite.update();
+  }
+
+  private updatePosition() {
+    var pos = this._object.getPosition();
+    this.position.set(pos.x, pos.y, pos.z);
   }
 
   onSelected(selected: boolean) {

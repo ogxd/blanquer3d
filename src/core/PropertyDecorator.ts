@@ -1,40 +1,22 @@
 import "reflect-metadata";
 
-//let propertyTypes = new Map<any, any>();
-
-interface IProperty {
-  name: string;
-  typeName: string;
-}
-
-export function property(target: any, propertyKey: string | symbol): any {
+export function property(target: any, propertyKey: string): any {
   // We need a unique key here because otherwise we would be
   // calling ourselves, and that results in an infinite loop.
   const key = Symbol();
 
-  let lambdas = new Map<any, any>();
+  const lambdas = new Map<any, Function>();
 
-  if (!target.properties) {
-    target.properties = [];
-  }
-
-  var type = Reflect.getMetadata("design:type", target, propertyKey);
+  const type = Reflect.getMetadata("design:type", target, propertyKey);
   //console.log(`Property on object: ${target}, with name: ${String(propertyKey)}, of type: ${type.name}`);
-  //console.log(target);
 
-  //target.properties.push({ name: propertyKey, type: type.name });
-
-  try {
-    Object.defineProperty(target, "properties", {
-      value: [],
-      writable: false,
-      configurable: false,
-    });
-  } catch {}
-
-  target.properties.push({ name: propertyKey, type: type.name });
+  // Define metadata in order to help retreiving it later of a given object
+  // Supports inheritance
+  Reflect.defineMetadata("custom:property", type.name, target, propertyKey);
+  //console.log("define metadata: " + target + ", property: " + propertyKey);
 
   return {
+    enumerable: true,
     get(): any {
       return this[key];
     },
@@ -59,4 +41,23 @@ export function property(target: any, propertyKey: string | symbol): any {
       this.onPropertyChanged?.dispatch(propertyKey);
     },
   };
+}
+
+interface IPropertyDescription {
+  propertyName: string;
+  typeName: string;
+}
+
+export function getProperties(selectedObject: any): IPropertyDescription[] {
+  // javascript 🤮
+  let properties = Object.keys(selectedObject);
+  let prototype = selectedObject;
+  while ((prototype = Object.getPrototypeOf(prototype))) {
+    properties = Object.keys(prototype).concat(properties);
+  }
+  return properties
+    .filter((property) => Reflect.hasMetadata("custom:property", selectedObject, property))
+    .map(function (property): IPropertyDescription {
+      return { propertyName: property, typeName: Reflect.getMetadata("custom:property", selectedObject, property) };
+    });
 }

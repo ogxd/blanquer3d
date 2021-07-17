@@ -1,4 +1,4 @@
-import { createInstance } from "src/core/Serialization";
+import { createInstance } from "src/core/Reflection";
 import EventSubscriber from "../core/EventSubscriber";
 import { arrayRemove } from "../core/Utils";
 import SceneObject from "../scene/SceneObject";
@@ -18,12 +18,21 @@ class Scene {
   load(base64: string) {
     const json: string = window.atob(base64.replaceAll("-", "+").replaceAll("_", "/"));
     const objects = JSON.parse(json);
+    console.log(objects);
     this._objects.length = 0;
+    const bindings: Function[] = [];
     objects.forEach((element) => {
       const child = createInstance(element["type"]);
       child.deserialize(element);
-      this.addObject(child);
+      this.addObjectNoInit(child);
+      bindings.push(() => {
+        const refs = element["refs"];
+        for (const ref in refs) {
+          child[ref] = this._objects.find((x) => x.name == refs[ref]);
+        }
+      });
     });
+    bindings.forEach((x) => x());
   }
 
   private readonly _objects: SceneObject[] = [];
@@ -48,6 +57,10 @@ class Scene {
 
   addObject(object: SceneObject) {
     object.initialize();
+    this.addObjectNoInit(object);
+  }
+
+  private addObjectNoInit(object: SceneObject) {
     this._objects.push(object);
     this.onObjectAdded.dispatch(object);
   }

@@ -2,23 +2,10 @@ import Vector3 from "../../maths/Vector3";
 import { property } from "../../core/PropertyDecorator";
 import { Point } from "./Point";
 import { ISerializable } from "src/core/Serialization";
-import * as Blanquer3d from "src/blanquer3d";
+import { reflectable } from "src/core/Reflection";
 
+@reflectable
 export class PointFromPosition extends Point implements ISerializable {
-  serialize(object: any) {
-    object["type"] = "PointFromPosition";
-    this.position?.serialize((object["position"] = new Object()));
-    super.serialize(object);
-  }
-
-  deserialize(object: any) {
-    this.position = new Vector3(object["position"]["x"], object["position"]["y"], object["position"]["z"]);
-    super.deserialize(object);
-  }
-
-  @property
-  name: string;
-
   @property
   position: Vector3;
 
@@ -29,5 +16,19 @@ export class PointFromPosition extends Point implements ISerializable {
 
   getPosition() {
     return this.position;
+  }
+
+  serialize(object: any) {
+    object["type"] = "PointFromPosition";
+    this.position?.serialize((object["position"] = new Object()));
+    super.serialize(object);
+  }
+
+  deserialize(object: any) {
+    const position = object["position"];
+    if (position) {
+      this.position = new Vector3(position.x, position.y, position.z);
+    }
+    super.deserialize(object);
   }
 }

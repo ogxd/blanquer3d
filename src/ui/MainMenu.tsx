@@ -49,7 +49,8 @@ class MainMenu extends Component {
           <RibbonGroupItem colClass="col-4">
             <RibbonButton
               onClick={(x) => {
-                console.log(window.location + "?save=" + Scene.getInstance().save());
+                const loc = window.location;
+                console.log(loc.protocol + "//" + loc.host + loc.pathname + "?save=" + Scene.getInstance().save());
               }}
             >
               <svg

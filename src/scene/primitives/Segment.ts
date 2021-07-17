@@ -1,20 +1,10 @@
 import SceneObject from "../SceneObject";
 import { Point } from "./Point";
 import { property } from "../../core/PropertyDecorator";
+import { reflectable } from "src/core/Reflection";
 
+@reflectable
 export class Segment extends SceneObject {
-  serialize(object: any) {
-    object["type"] = "Segment";
-    object["refs"] = {
-      point: this.point1?.name,
-      segment: this.point2?.name,
-    };
-    super.serialize(object);
-  }
-
-  @property
-  name: string;
-
   @property
   point1: Point;
 
@@ -23,5 +13,14 @@ export class Segment extends SceneObject {
 
   initialize() {
     this.name = "New Segment";
+  }
+
+  serialize(object: any) {
+    object["type"] = "Segment";
+    object["refs"] = {
+      point1: this.point1?.name,
+      point2: this.point2?.name,
+    };
+    super.serialize(object);
   }
 }

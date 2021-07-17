@@ -7,7 +7,7 @@ import { ISerializable } from "src/core/Serialization";
 abstract class SceneObject implements ISerializable {
   serialize(object: any) {
     object["visibility"] = this.visibility;
-    object["name"] = this.visibility;
+    object["name"] = this.name;
   }
 
   deserialize(object: any) {

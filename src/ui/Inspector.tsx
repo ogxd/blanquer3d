@@ -3,9 +3,11 @@ import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import Scene from "../scene/Scene";
 import { drawProperty } from "../core/PropertyDrawer";
+import { getProperties } from "../core/PropertyDecorator";
 import PropertyDrawers from "./PropertyDrawers";
 import MainMenu from "./MainMenu";
 import { ListItem } from "@material-ui/core";
+import SceneObject from "src/scene/SceneObject";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -39,32 +41,17 @@ class Inspector extends Component {
   }
 
   getVisuals() {
-    const selectedObject: any = Scene.getInstance().getSelected();
+    const selectedObject: SceneObject = Scene.getInstance().getSelected();
 
     if (!selectedObject) {
-      return <h2>Nothing Selected</h2>;
+      return <h3>Nothing Selected</h3>;
     }
-
-    const elements = [];
-    const properties: any[] = selectedObject.properties;
 
     let key = 0;
 
-    // console.log("iterate");
-    // Object.keys(selectedObject).forEach((x) => {
-    //   console.log(x);
-    // });
-
-    //todo: per object type property drawer OR getProperties trick
-    properties.forEach((property) => {
-      const propertyName = property.name;
-      const propertyType = property.type;
-
-      //console.log(`name:${propertyName} type:${propertyType}`);
-
-      elements.push(<ListItem key={key}>{drawProperty(selectedObject, propertyName, propertyType)}</ListItem>);
-      key++;
-    });
+    const elements = getProperties(selectedObject).map((property) => (
+      <ListItem key={key++}>{drawProperty(selectedObject, property.propertyName, property.typeName)}</ListItem>
+    ));
 
     return (
       <React.Fragment>
