@@ -5,5 +5,9 @@ export function reflectable(constructor: any) {
 }
 
 export function createInstance(typeName: string): any {
-  return registeredReflectables[typeName]();
+  const ctor = registeredReflectables[typeName];
+  if (ctor) {
+    return ctor();
+  }
+  throw new Error(`Type ${typeName} is unregistered and can't be instanced`);
 }
