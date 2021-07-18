@@ -3,7 +3,7 @@ import { Point } from "./Point";
 import { property } from "../../core/PropertyDecorator";
 import { reflectable } from "src/core/Reflection";
 
-@reflectable
+@reflectable("Segment")
 export class Segment extends SceneObject {
   @property
   point1: Point;

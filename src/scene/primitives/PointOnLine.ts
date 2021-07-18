@@ -4,7 +4,7 @@ import { Segment } from "./Segment";
 import { Point } from "./Point";
 import { reflectable } from "src/core/Reflection";
 
-@reflectable
+@reflectable("PointOnLine")
 export class PointOnLine extends Point {
   @property
   point: Point;

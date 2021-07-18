@@ -1,15 +1,8 @@
 const registeredReflectables = new Map<string, Function>();
 
-export function reflectable(constructor: any) {
-  registeredReflectables[constructor.name] = () => new constructor();
-  console.log(">>>");
-  console.log(constructor);
-  console.log(constructor.prototype);
-}
-
-export function reflect(numOfWheels: string) {
-  return function (constructor: Function) {
-    constructor.prototype.wheels = numOfWheels;
+export function reflectable(typeName: string) {
+  return function (constructor: any) {
+    registeredReflectables[typeName] = () => new constructor();
   };
 }
 

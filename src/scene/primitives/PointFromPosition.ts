@@ -4,7 +4,7 @@ import { Point } from "./Point";
 import { ISerializable } from "src/core/Serialization";
 import { reflectable } from "src/core/Reflection";
 
-@reflectable
+@reflectable("PointFromPosition")
 export class PointFromPosition extends Point implements ISerializable {
   @property
   position: Vector3;
