@@ -14,10 +14,6 @@ import Grid from "src/view/utils/Grid";
 import PickHelper from "./utils/PickHelper";
 import SceneObject from "src/scene/SceneObject";
 
-export interface ViewportProps {}
-
-export interface ViewportState {}
-
 class Viewport {
   private _renderer: Three.WebGLRenderer;
   private _camera: Three.PerspectiveCamera;
@@ -102,6 +98,16 @@ class Viewport {
       if (selected) {
         Scene.getInstance().setSelected(selected.getObject());
       }
+    });
+
+    window.addEventListener("mousemove", (event) => {
+      const pos = this.getCanvasRelativePosition(event);
+      const x: number = (pos.x / this._element.width) * 2 - 1;
+      const y: number = (pos.y / this._element.height) * -2 + 1; // note we flip Y
+
+      const highlighted = this._pickHelper.pick(x, y, this._threeScene, this._camera);
+
+      Scene.getInstance().setHighlighted(highlighted?.getObject());
     });
 
     let group = new Three.Group();

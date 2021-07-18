@@ -39,8 +39,10 @@ class Scene {
   readonly onObjectAdded = new EventSubscriber<SceneObject>();
   readonly onObjectRemoved = new EventSubscriber<SceneObject>();
   readonly onObjectSelected = new EventSubscriber<SceneObject>();
+  readonly onObjectHighlighted = new EventSubscriber<SceneObject>();
 
   private _selected: SceneObject;
+  private _highlighted: SceneObject;
 
   getSelected() {
     return this._selected;
@@ -52,6 +54,15 @@ class Scene {
       this._selected = selected;
       this._selected?.onSelected.dispatch(true);
       this.onObjectSelected.dispatch(selected);
+    }
+  }
+
+  setHighlighted(highlighted: SceneObject) {
+    if (this._highlighted !== highlighted) {
+      this._highlighted?.onHighlighted.dispatch(false);
+      this._highlighted = highlighted;
+      this._highlighted?.onHighlighted.dispatch(true);
+      this.onObjectHighlighted.dispatch(highlighted);
     }
   }
 

@@ -62,4 +62,8 @@ export class PointVisual extends Visual<Point> {
   onSelected(selected: boolean) {
     this._material.color = new Three.Color(selected ? 0x00ff00 : 0xff0000);
   }
+
+  onHighlighted(highlighted: boolean) {
+    this._material.color = new Three.Color(highlighted ? 0x0000ff : 0xff0000);
+  }
 }

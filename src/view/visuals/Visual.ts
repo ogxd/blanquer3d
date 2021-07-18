@@ -12,6 +12,7 @@ export abstract class Visual<T extends SceneObject> extends Three.Group {
     this._object.onPropertyChanged.subscribe(this, this.onPropertyChanged);
     this._object.onDestroy.subscribe(this, this.onDestroy);
     this._object.onSelected.subscribe(this, this.onSelected);
+    this._object.onHighlighted.subscribe(this, this.onHighlighted);
   }
 
   getObject(): T {
@@ -27,4 +28,6 @@ export abstract class Visual<T extends SceneObject> extends Three.Group {
   abstract onCreate();
 
   abstract onSelected(selected: boolean);
+
+  abstract onHighlighted(highlighted: boolean);
 }

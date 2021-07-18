@@ -50,4 +50,8 @@ export class SegmentVisual extends Visual<Segment> {
   onSelected(selected: boolean) {
     this._material.color = new Three.Color(selected ? 1 : 0, 0, 0);
   }
+
+  onHighlighted(highlighted: boolean) {
+    this._material.color = new Three.Color(0, highlighted ? 1 : 0, 0);
+  }
 }
