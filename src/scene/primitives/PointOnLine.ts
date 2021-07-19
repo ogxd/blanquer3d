@@ -4,7 +4,7 @@ import { Segment } from "./Segment";
 import { Point } from "./Point";
 import { reflectable } from "src/core/Reflection";
 
-@reflectable("PointOnLine")
+@reflectable(2)
 export class PointOnLine extends Point {
   @property
   point: Point;
@@ -27,7 +27,7 @@ export class PointOnLine extends Point {
   }
 
   serialize(object: any) {
-    object["type"] = "PointOnLine";
+    object["type"] = this["classId"];
     object["refs"] = {
       point: this.point?.name,
       segment: this.segment?.name,

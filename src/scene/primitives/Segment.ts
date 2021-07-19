@@ -3,7 +3,7 @@ import { Point } from "./Point";
 import { property } from "../../core/PropertyDecorator";
 import { reflectable } from "src/core/Reflection";
 
-@reflectable("Segment")
+@reflectable(3)
 export class Segment extends SceneObject {
   @property
   point1: Point;
@@ -16,7 +16,7 @@ export class Segment extends SceneObject {
   }
 
   serialize(object: any) {
-    object["type"] = "Segment";
+    object["type"] = this["classId"];
     object["refs"] = {
       point1: this.point1?.name,
       point2: this.point2?.name,

@@ -1,8 +1,11 @@
-const registeredReflectables = new Map<string, Function>();
+const registeredReflectables = new Map<number, Function>();
 
-export function reflectable(typeName: string) {
-  return function (constructor: any) {
-    registeredReflectables[typeName] = () => new constructor();
+export function reflectable(id: number) {
+  return function classDecorator<T extends { new (...args: any[]): {} }>(constructor: T) {
+    registeredReflectables[id] = () => new constructor();
+    return class extends constructor {
+      classId = id;
+    };
   };
 }
 

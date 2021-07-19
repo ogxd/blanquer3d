@@ -4,7 +4,7 @@ import { Point } from "./Point";
 import { ISerializable } from "src/core/Serialization";
 import { reflectable } from "src/core/Reflection";
 
-@reflectable("PointFromPosition")
+@reflectable(1)
 export class PointFromPosition extends Point implements ISerializable {
   @property
   position: Vector3;
@@ -19,7 +19,7 @@ export class PointFromPosition extends Point implements ISerializable {
   }
 
   serialize(object: any) {
-    object["type"] = "PointFromPosition";
+    object["type"] = this["classId"];
     this.position?.serialize((object["position"] = new Object()));
     super.serialize(object);
   }
