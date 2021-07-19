@@ -13,15 +13,17 @@ import { SegmentVisual } from "./visuals/SegmentVisual";
 import Grid from "src/view/utils/Grid";
 import PickHelper from "./utils/PickHelper";
 import SceneObject from "src/scene/SceneObject";
+import { arrayRemove } from "src/core/Utils";
 
 class Viewport {
   private _renderer: Three.WebGLRenderer;
-  private _camera: Three.PerspectiveCamera;
+  private _camera: Three.OrthographicCamera;
   private _threeScene: Three.Scene;
   private _resize: any;
   private _element: HTMLCanvasElement;
   private _pickHelper: PickHelper;
   private _controls: OrbitControls;
+  private _visuals: Visual<SceneObject>[];
 
   constructor(element: HTMLCanvasElement) {
     Viewport._instance = this;
@@ -33,8 +35,18 @@ class Viewport {
     // Create an empty scene
     this._threeScene = new Three.Scene();
 
+    this._visuals = [];
+
     // Create a basic perspective camera
-    this._camera = new Three.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+    //this._camera = new Three.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+    this._camera = new Three.OrthographicCamera(
+      this._element.offsetWidth / -2,
+      this._element.offsetWidth / 2,
+      this._element.offsetHeight / 2,
+      this._element.offsetHeight / -2,
+      1,
+      1000
+    );
     this._camera.up.set(0, 0, 1);
 
     // Create a renderer
@@ -47,7 +59,7 @@ class Viewport {
     window.addEventListener(
       "resize",
       (this._resize = () => {
-        this._camera.aspect = this._element.offsetWidth / this._element.offsetHeight;
+        //this._camera.aspect = this._element.offsetWidth / this._element.offsetHeight;
         this._camera.updateProjectionMatrix();
         this._renderer.setSize(this._element.offsetWidth, this._element.offsetHeight);
       })
@@ -64,16 +76,18 @@ class Viewport {
     this.setViewMode(false);
     MainMenu.getInstance().onViewModeChanged.subscribe(this, this.setViewMode);
 
+    const labelsLayer = document.getElementById("labels");
+
     Scene.getInstance().onObjectAdded.subscribe(this, (sceneObject) => {
       let visual: Visual<SceneObject>;
       //console.log(sceneObject.constructor);
       switch (sceneObject.constructor) {
         case PointOnLine:
         case PointFromPosition:
-          visual = new PointVisual(sceneObject as Point);
+          visual = new PointVisual(sceneObject as Point, this._camera, labelsLayer);
           break;
         case Segment:
-          visual = new SegmentVisual(sceneObject as Segment);
+          visual = new SegmentVisual(sceneObject as Segment, this._camera, labelsLayer);
           break;
         default:
           return;
@@ -81,13 +95,15 @@ class Viewport {
 
       visual.onCreate();
       this._threeScene.add(visual);
+      this._visuals.push(visual);
+
       sceneObject.onDestroy.subscribe(this, () => {
         this._threeScene.remove(visual);
+        arrayRemove(this._visuals, visual);
         visual.onDestroy();
       });
     });
 
-    //window.addEventListener("mousemove", (x) => this.setPickPosition(x));
     window.addEventListener("mousedown", (event) => {
       const pos = this.getCanvasRelativePosition(event);
       const x: number = (pos.x / this._element.width) * 2 - 1;
@@ -129,9 +145,9 @@ class Viewport {
   }
 
   render3d(time) {
-    // for (const visual of this._visuals) {
-    //   visual.onRender();
-    // }
+    for (const visual of this._visuals) {
+      visual.onRender();
+    }
 
     time *= 0.001; // convert to seconds;
 

@@ -2,11 +2,12 @@ import { Point } from "../../scene/primitives/Point";
 import TextSprite from "src/view/utils/TextSprite";
 import { Visual } from "./Visual";
 import * as Three from "three";
+import { HtmlLabel } from "../utils/HtmlLabel";
 
 export class PointVisual extends Visual<Point> {
   private _sphere: Three.Mesh;
-  private _textSprite: TextSprite;
   private _material: Three.MeshBasicMaterial;
+  private _textLabel: HtmlLabel;
 
   onCreate() {
     const geometry = new Three.SphereGeometry(0.5, 32, 32);
@@ -14,20 +15,19 @@ export class PointVisual extends Visual<Point> {
     this._sphere = new Three.Mesh(geometry, this._material);
     this.add(this._sphere);
 
-    this._textSprite = new TextSprite();
-    this.add(this._textSprite);
+    this._textLabel = new HtmlLabel(this._element);
+    this.add(this._textLabel);
 
     this.updateLabel();
     this.updatePosition();
   }
 
   onDestroy() {
-    //this._scene.remove(this._sphere);
-    //this._scene.remove(this._textSprite);
+    this._textLabel.destroy();
   }
 
   onRender() {
-    //console.log(this._object);
+    this._textLabel.updatePosition(this._camera);
   }
 
   onVisibilityChanged(isVisible: boolean) {
@@ -50,8 +50,7 @@ export class PointVisual extends Visual<Point> {
   }
 
   private updateLabel() {
-    this._textSprite.parameters.text = this._object.name;
-    this._textSprite.update();
+    this._textLabel.setHTML(this._object.name);
   }
 
   private updatePosition() {

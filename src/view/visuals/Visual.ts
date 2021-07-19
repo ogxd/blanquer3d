@@ -3,11 +3,14 @@ import * as Three from "three";
 
 export abstract class Visual<T extends SceneObject> extends Three.Group {
   protected _object: T;
-  protected _scene: Three.Scene;
+  protected _camera: Three.Camera;
+  protected _element: HTMLElement;
 
-  constructor(object: T) {
+  constructor(object: T, camera: Three.Camera, element: HTMLElement) {
     super();
     this._object = object;
+    this._camera = camera;
+    this._element = element;
 
     this._object.onPropertyChanged.subscribe(this, this.onPropertyChanged);
     this._object.onDestroy.subscribe(this, this.onDestroy);
