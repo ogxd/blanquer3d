@@ -18,7 +18,6 @@ class Scene {
   load(base64: string) {
     const json: string = window.atob(base64.replaceAll("-", "+").replaceAll("_", "/"));
     const objects = JSON.parse(json);
-    console.log(objects);
     this._objects.length = 0;
     const bindings: Function[] = [];
     objects.forEach((element) => {
@@ -73,6 +72,7 @@ class Scene {
 
   private addObjectNoInit(object: SceneObject) {
     this._objects.push(object);
+    console.log("object added");
     this.onObjectAdded.dispatch(object);
   }
 

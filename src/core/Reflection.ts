@@ -2,10 +2,11 @@ const registeredReflectables = new Map<number, Function>();
 
 export function reflectable(id: number) {
   return function classDecorator<T extends { new (...args: any[]): {} }>(constructor: T) {
-    registeredReflectables[id] = () => new constructor();
-    return class extends constructor {
+    const extendedCtor = class extends constructor {
       classId = id;
     };
+    registeredReflectables[id] = () => new extendedCtor();
+    return extendedCtor;
   };
 }
 
