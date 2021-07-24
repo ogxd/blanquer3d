@@ -22,7 +22,6 @@ export * from "./view/visuals/SegmentVisual";
 export * from "./view/OrbitControls";
 export * from "./view/Viewport";
 export * from "./view/utils/Grid";
-export * from "./view/utils/TextSprite";
 
 export * from "./ui/Hierarchy";
 export * from "./ui/Inspector";

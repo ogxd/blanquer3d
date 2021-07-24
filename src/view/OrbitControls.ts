@@ -88,11 +88,7 @@ export class OrbitControls extends Three.EventDispatcher {
   private onTouchMove: EventListener;
   private onKeyDown: EventListener;
 
-  constructor(
-    object: Three.Camera,
-    domElement?: HTMLElement,
-    domWindow?: Window
-  ) {
+  constructor(object: Three.Camera, domElement?: HTMLElement, domWindow?: Window) {
     super();
     this.object = object;
 
@@ -167,10 +163,7 @@ export class OrbitControls extends Three.EventDispatcher {
     // for update speedup
     this.updateOffset = new Three.Vector3();
     // so camera.up is the orbit axis
-    this.updateQuat = new Three.Quaternion().setFromUnitVectors(
-      object.up,
-      new Three.Vector3(0, 1, 0)
-    );
+    this.updateQuat = new Three.Quaternion().setFromUnitVectors(object.up, new Three.Vector3(0, 1, 0));
     this.updateQuatInverse = this.updateQuat.clone().inverse();
     this.updateLastPosition = new Three.Vector3();
     this.updateLastQuaternion = new Three.Quaternion();
@@ -236,19 +229,12 @@ export class OrbitControls extends Three.EventDispatcher {
         if (this.enableRotate === false) return;
         this.rotateEnd.set(event.clientX, event.clientY);
         this.rotateDelta.subVectors(this.rotateEnd, this.rotateStart);
-        const element =
-          this.domElement === document ? this.domElement.body : this.domElement;
+        const element = this.domElement === document ? this.domElement.body : this.domElement;
 
         // rotating across whole screen goes 360 degrees around
-        this.rotateLeft(
-          ((2 * Math.PI * this.rotateDelta.x) / (element as any).clientWidth) *
-            this.rotateSpeed
-        );
+        this.rotateLeft(((2 * Math.PI * this.rotateDelta.x) / (element as any).clientWidth) * this.rotateSpeed);
         // rotating up and down along whole screen attempts to go 360, but limited to 180
-        this.rotateUp(
-          ((2 * Math.PI * this.rotateDelta.y) / (element as any).clientHeight) *
-            this.rotateSpeed
-        );
+        this.rotateUp(((2 * Math.PI * this.rotateDelta.y) / (element as any).clientHeight) * this.rotateSpeed);
         this.rotateStart.copy(this.rotateEnd);
 
         this.update();
@@ -310,12 +296,7 @@ export class OrbitControls extends Three.EventDispatcher {
     };
 
     this.onKeyDown = (event: ThreeEvent) => {
-      if (
-        this.enabled === false ||
-        this.enableKeys === false ||
-        this.enablePan === false
-      )
-        return;
+      if (this.enabled === false || this.enableKeys === false || this.enablePan === false) return;
 
       switch (event.keyCode) {
         case this.keys.UP:
@@ -354,10 +335,7 @@ export class OrbitControls extends Three.EventDispatcher {
           {
             if (this.enableRotate === false) return;
 
-            this.rotateStart.set(
-              event.touches[0].pageX,
-              event.touches[0].pageY
-            );
+            this.rotateStart.set(event.touches[0].pageX, event.touches[0].pageY);
             this.state = STATE.TOUCH_ROTATE;
           }
           break;
@@ -408,24 +386,13 @@ export class OrbitControls extends Three.EventDispatcher {
             this.rotateEnd.set(event.touches[0].pageX, event.touches[0].pageY);
             this.rotateDelta.subVectors(this.rotateEnd, this.rotateStart);
 
-            var element =
-              this.domElement === document
-                ? this.domElement.body
-                : this.domElement;
+            var element = this.domElement === document ? this.domElement.body : this.domElement;
 
             // rotating across whole screen goes 360 degrees around
-            this.rotateLeft(
-              ((2 * Math.PI * this.rotateDelta.x) /
-                (element as any).clientWidth) *
-                this.rotateSpeed
-            );
+            this.rotateLeft(((2 * Math.PI * this.rotateDelta.x) / (element as any).clientWidth) * this.rotateSpeed);
 
             // rotating up and down along whole screen attempts to go 360, but limited to 180
-            this.rotateUp(
-              ((2 * Math.PI * this.rotateDelta.y) /
-                (element as any).clientHeight) *
-                this.rotateSpeed
-            );
+            this.rotateUp(((2 * Math.PI * this.rotateDelta.y) / (element as any).clientHeight) * this.rotateSpeed);
 
             this.rotateStart.copy(this.rotateEnd);
 
@@ -594,8 +561,7 @@ export class OrbitControls extends Three.EventDispatcher {
 
   // deltaX and deltaY are in pixels; right and down are positive
   pan(deltaX: number, deltaY: number) {
-    const element =
-      this.domElement === document ? this.domElement.body : this.domElement;
+    const element = this.domElement === document ? this.domElement.body : this.domElement;
 
     if (this._checkPerspectiveCamera(this.object)) {
       // perspective
@@ -607,33 +573,21 @@ export class OrbitControls extends Three.EventDispatcher {
       targetDistance *= Math.tan(((this.object.fov / 2) * Math.PI) / 180.0);
 
       // we actually don't use screenWidth, since perspective camera is fixed to screen height
-      this.panLeft(
-        (2 * deltaX * targetDistance) / (element as any).clientHeight,
-        this.object.matrix
-      );
-      this.panUp(
-        (2 * deltaY * targetDistance) / (element as any).clientHeight,
-        this.object.matrix
-      );
+      this.panLeft((2 * deltaX * targetDistance) / (element as any).clientHeight, this.object.matrix);
+      this.panUp((2 * deltaY * targetDistance) / (element as any).clientHeight, this.object.matrix);
     } else if (this._checkOrthographicCamera(this.object)) {
       // orthographic
       this.panLeft(
-        (deltaX * (this.object.right - this.object.left)) /
-          this.object.zoom /
-          (element as any).clientWidth,
+        (deltaX * (this.object.right - this.object.left)) / this.object.zoom / (element as any).clientWidth,
         this.object.matrix
       );
       this.panUp(
-        (deltaY * (this.object.top - this.object.bottom)) /
-          this.object.zoom /
-          (element as any).clientHeight,
+        (deltaY * (this.object.top - this.object.bottom)) / this.object.zoom / (element as any).clientHeight,
         this.object.matrix
       );
     } else {
       // camera neither orthographic nor perspective
-      console.warn(
-        "WARNING: OrbitControls.js encountered an unknown camera type - pan disabled."
-      );
+      console.warn("WARNING: OrbitControls.js encountered an unknown camera type - pan disabled.");
       this.enablePan = false;
     }
   }
@@ -642,16 +596,11 @@ export class OrbitControls extends Three.EventDispatcher {
     if (this._checkPerspectiveCamera(this.object)) {
       this.scale /= dollyScale;
     } else if (this._checkOrthographicCamera(this.object)) {
-      this.object.zoom = Math.max(
-        this.minZoom,
-        Math.min(this.maxZoom, this.object.zoom * dollyScale)
-      );
+      this.object.zoom = Math.max(this.minZoom, Math.min(this.maxZoom, this.object.zoom * dollyScale));
       this.object.updateProjectionMatrix();
       this.zoomChanged = true;
     } else {
-      console.warn(
-        "WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled."
-      );
+      console.warn("WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled.");
       this.enableZoom = false;
     }
   }
@@ -660,16 +609,11 @@ export class OrbitControls extends Three.EventDispatcher {
     if (this._checkPerspectiveCamera(this.object)) {
       this.scale *= dollyScale;
     } else if (this._checkOrthographicCamera(this.object)) {
-      this.object.zoom = Math.max(
-        this.minZoom,
-        Math.min(this.maxZoom, this.object.zoom / dollyScale)
-      );
+      this.object.zoom = Math.max(this.minZoom, Math.min(this.maxZoom, this.object.zoom / dollyScale));
       this.object.updateProjectionMatrix();
       this.zoomChanged = true;
     } else {
-      console.warn(
-        "WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled."
-      );
+      console.warn("WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled.");
       this.enableZoom = false;
     }
   }
@@ -699,11 +643,7 @@ export class OrbitControls extends Three.EventDispatcher {
   }
 
   dispose(): void {
-    this.domElement.removeEventListener(
-      "contextmenu",
-      this.onContextMenu,
-      false
-    );
+    this.domElement.removeEventListener("contextmenu", this.onContextMenu, false);
     this.domElement.removeEventListener("mousedown", this.onMouseDown, false);
     this.domElement.removeEventListener("wheel", this.onMouseWheel, false);
 
@@ -735,10 +675,7 @@ export class OrbitControls extends Three.EventDispatcher {
     this.target0.copy(this.target);
     this.position0.copy(this.object.position);
     // Check whether the camera has zoom property
-    if (
-      this._checkOrthographicCamera(this.object) ||
-      this._checkPerspectiveCamera(this.object)
-    ) {
+    if (this._checkOrthographicCamera(this.object) || this._checkPerspectiveCamera(this.object)) {
       this.zoom0 = this.object.zoom;
     }
   }
@@ -749,16 +686,12 @@ export class OrbitControls extends Three.EventDispatcher {
     return this.target;
   }
   get noZoom(): boolean {
-    console.warn(
-      "THREE.OrbitControls: .noZoom has been deprecated. Use .enableZoom instead."
-    );
+    console.warn("THREE.OrbitControls: .noZoom has been deprecated. Use .enableZoom instead.");
     return !this.enableZoom;
   }
 
   set noZoom(value: boolean) {
-    console.warn(
-      "THREE.OrbitControls: .noZoom has been deprecated. Use .enableZoom instead."
-    );
+    console.warn("THREE.OrbitControls: .noZoom has been deprecated. Use .enableZoom instead.");
     this.enableZoom = !value;
   }
 
@@ -767,9 +700,7 @@ export class OrbitControls extends Three.EventDispatcher {
    * If the check passes (returns true) the passed camera will have the type THREE.PerspectiveCamera in the if branch where the check was performed.
    * @param camera Object to be checked.
    */
-  private _checkPerspectiveCamera(
-    camera: Three.Camera
-  ): camera is Three.PerspectiveCamera {
+  private _checkPerspectiveCamera(camera: Three.Camera): camera is Three.PerspectiveCamera {
     return (camera as Three.PerspectiveCamera).isPerspectiveCamera;
   }
   /**
@@ -777,9 +708,7 @@ export class OrbitControls extends Three.EventDispatcher {
    * If the check passes (returns true) the passed camera will have the type THREE.OrthographicCamera in the if branch where the check was performed.
    * @param camera Object to be checked.
    */
-  private _checkOrthographicCamera(
-    camera: Three.Camera
-  ): camera is Three.OrthographicCamera {
+  private _checkOrthographicCamera(camera: Three.Camera): camera is Three.OrthographicCamera {
     return (camera as Three.OrthographicCamera).isOrthographicCamera;
   }
 }

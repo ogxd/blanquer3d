@@ -145,13 +145,13 @@ class Viewport {
   }
 
   render3d(time) {
-    for (const visual of this._visuals) {
-      visual.onRender();
-    }
-
     time *= 0.001; // convert to seconds;
 
     this._renderer.render(this._threeScene, this._camera);
+
+    for (const visual of this._visuals) {
+      visual.onRender();
+    }
 
     requestAnimationFrame(this.render3d.bind(this));
   }

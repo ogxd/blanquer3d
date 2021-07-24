@@ -3,10 +3,10 @@ import * as Three from "three";
 export class HtmlLabel extends Three.Object3D {
   private _element: HTMLElement;
 
-  constructor(parentElement: HTMLElement) {
+  constructor(parentElement: HTMLElement, centered: boolean) {
     super();
     const div = document.createElement("div");
-    div.className = "text-label";
+    div.className = centered ? "overlay-centered" : "overlay-label";
     div.style.position = "absolute";
     div.style.width = "100";
     div.style.height = "100";
@@ -31,10 +31,12 @@ export class HtmlLabel extends Three.Object3D {
 
   get2DCoords(position: Three.Vector3, camera: Three.Camera) {
     const posCopy = new Three.Vector3();
-    position.copy(posCopy);
+    this.getWorldPosition(posCopy);
     const vector = posCopy.project(camera);
-    vector.x = ((vector.x + 1) / 2) * window.innerWidth;
-    vector.y = (-(vector.y - 1) / 2) * window.innerHeight;
+    vector.x = Math.round(((vector.x + 1) / 2) * window.innerWidth);
+    vector.y = Math.round(((-vector.y + 1) / 2) * window.innerHeight);
+    //vector.x = ((vector.x + 1) / 2) * window.innerWidth;
+    //vector.y = (-(vector.y - 1) / 2) * window.innerHeight;
     return vector;
   }
 

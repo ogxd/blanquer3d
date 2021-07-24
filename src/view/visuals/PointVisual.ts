@@ -1,5 +1,4 @@
 import { Point } from "../../scene/primitives/Point";
-import TextSprite from "src/view/utils/TextSprite";
 import { Visual } from "./Visual";
 import * as Three from "three";
 import { HtmlLabel } from "../utils/HtmlLabel";
@@ -15,7 +14,7 @@ export class PointVisual extends Visual<Point> {
     this._sphere = new Three.Mesh(geometry, this._material);
     this.add(this._sphere);
 
-    this._textLabel = new HtmlLabel(this._element);
+    this._textLabel = new HtmlLabel(this._element, false);
     this.add(this._textLabel);
 
     this.updateLabel();

@@ -44,9 +44,18 @@
   padding: 10px;
 }
 
-.text-label {
+.overlay-label {
   color: #000;
   margin: -5px 0 0 15px;
+  pointer-events: none;
+}
+
+.overlay-centered {
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
   pointer-events: none;
 }
 
